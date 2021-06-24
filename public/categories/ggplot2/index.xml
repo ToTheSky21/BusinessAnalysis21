@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ggplot2 on Tarana-Fundamentals of Data Analystics</title>
+    <link>/categories/ggplot2/</link>
+    <description>Recent content in ggplot2 on Tarana-Fundamentals of Data Analystics</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 21 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/ggplot2/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Final Project</title>
+      <link>/2021/06/21/final-project/</link>
+      <pubDate>Mon, 21 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/06/21/final-project/</guid>
+      <description>Data Analysis to fit Linear Regression Model: This is an exploratory analysis report to fit the Linear Regression Model. This report concerns a dataset about Life Expectancy.
+ Categorical and numerical explanatory variables analysis:  For finding whether there is any relation between the dataset or not, I have done some basic analysis to find the dependent and independent variables.From these analysis, the variable Life Expectancy has came out as dependent variable(y) as it is effected by other predictive variables.</description>
+    </item>
+    
+    <item>
+      <title>A05: EDA2</title>
+      <link>/2021/06/18/a05-eda2/</link>
+      <pubDate>Fri, 18 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/06/18/a05-eda2/</guid>
+      <description>Exploratory Data Analysis: This is my second exploratory analysis report for the course of Fundamentals of Business Analysis. This report concerns a dataset about Crimes report from 2001 of a city of USA. Here, I have performed some very basic analysis with the dataset.
+ Dataset: Crimes-2001 to present data (Chicago City) This dataset is about reported incidents of crime (with the exception of murders where data exists for each victim) that occurred in the City of Chicago from 2001 to the most recent days.</description>
+    </item>
+    
+    <item>
+      <title>Total funded expense actuals by agency name</title>
+      <link>/2021/06/10/total-funded-expense-actuals-by-agency-name/</link>
+      <pubDate>Thu, 10 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/06/10/total-funded-expense-actuals-by-agency-name/</guid>
+      <description>  Funded expense actuals by agency name from non-federal dataset of USA The small and simple interactive visualization represents the top five agency name those are funded by the actual expenses according to year 2015, 2016 &amp;amp; 2017.
+&amp;lt;iframe src=“https://taranaislam.shinyapps.io/mydataworld/”, height = “800” width = “100%” frameborder = “no”&amp;gt;
+ </description>
+    </item>
+    
+    <item>
+      <title>Assignment A01</title>
+      <link>/2021/05/20/assignment-a01/</link>
+      <pubDate>Thu, 20 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/20/assignment-a01/</guid>
+      <description>Titanic (titanic_train) Data Visualization  Short story behind the data sets  The sinking of the Titanic is one of the most infamous shipwrecks in history.
+On April 15, 1912, during her maiden voyage, the widely considered “unsinkable” RMS Titanic sank after colliding with an iceberg. Unfortunately, there weren’t enough lifeboats for everyone onboard, resulting in the death of 1502 out of 2224 passengers and crew.
+ Data at a glance  Titanic is an R package containing data sets,titanic_train and titanic_test.</description>
+    </item>
+    
+    <item>
+      <title>Data and Visualization</title>
+      <link>/2021/05/18/data-and-visualization/</link>
+      <pubDate>Tue, 18 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/18/data-and-visualization/</guid>
+      <description>Data Visualization Excercise library(dplyr) starwars ## # A tibble: 87 x 14 ## name height mass hair_color skin_color eye_color birth_year sex gender ## &amp;lt;chr&amp;gt; &amp;lt;int&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; ## 1 Luke S… 172 77 blond fair blue 19 male mascu… ## 2 C-3PO 167 75 &amp;lt;NA&amp;gt; gold yellow 112 none mascu… ## 3 R2-D2 96 32 &amp;lt;NA&amp;gt; white, bl… red 33 none mascu… ## 4 Darth … 202 136 none white yellow 41.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.83.1" />
+
+
+<title>Final Project - Tarana-Fundamentals of Data Analystics</title>
+<meta property="og:title" content="Final Project - Tarana-Fundamentals of Data Analystics">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/ToTheSky21">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/IslamTajnin">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">4 min read</span>
+    
+
+    <h1 class="article-title">Final Project</h1>
+
+    
+    <span class="article-date">2021-06-21</span>
+    
+
+    <div class="article-content">
+      
+<script src="/2021/06/21/final-project/index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="data-analysis-to-fit-linear-regression-model" class="section level2">
+<h2>Data Analysis to fit Linear Regression Model:</h2>
+<p>This is an exploratory analysis report to fit the Linear Regression Model. This report concerns a dataset about Life Expectancy.</p>
+</div>
+<div id="categorical-and-numerical-explanatory-variables-analysis" class="section level2">
+<h2>Categorical and numerical explanatory variables analysis:</h2>
+</div>
+<div id="for-finding-whether-there-is-any-relation-between-the-dataset-or-not-i-have-done-some-basic-analysis-to-find-the-dependent-and-independent-variables.from-these-analysis-the-variable-life-expectancy-has-came-out-as-dependent-variabley-as-it-is-effected-by-other-predictive-variables." class="section level2">
+<h2>For finding whether there is any relation between the dataset or not, I have done some basic analysis to find the dependent and independent variables.From these analysis, the variable Life Expectancy has came out as dependent variable(y) as it is effected by other predictive variables.</h2>
+</div>
+<div id="data-life-expectancy" class="section level2">
+<h2>Data: Life Expectancy</h2>
+<p>This Dataset is about Life Expectancy of different countries with several related variables(See below on printed Head of dataset). The data was collected from WHO and United Nations website aiming that this will help in suggesting a country which area should be given importance in order to efficiently improve the life expectancy of its population.Since the observations this dataset are based on different countries, it will be easier for a country to determine the predicting factor which is contributing to lower value of life expectancy.</p>
+<p>I have collected this dataset from the following website:
+<a href="https://www.kaggle.com" class="uri">https://www.kaggle.com</a> <a href="https://www.kaggle.com/kumarajarshi/life-expectancy-who" class="uri">https://www.kaggle.com/kumarajarshi/life-expectancy-who</a></p>
+<pre><code>## # A tibble: 6 x 22
+##   Country  Year Status `Life expectanc… `Adult Mortalit… `infant deaths` Alcohol
+##   &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;             &lt;dbl&gt;            &lt;dbl&gt;           &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Afghan…  2015 Devel…             65                263              62    0.01
+## 2 Afghan…  2014 Devel…             59.9              271              64    0.01
+## 3 Afghan…  2013 Devel…             59.9              268              66    0.01
+## 4 Afghan…  2012 Devel…             59.5              272              69    0.01
+## 5 Afghan…  2011 Devel…             59.2              275              71    0.01
+## 6 Afghan…  2010 Devel…             58.8              279              74    0.01
+## # … with 15 more variables: percentage expenditure &lt;dbl&gt;, Hepatitis B &lt;dbl&gt;,
+## #   Measles &lt;dbl&gt;, BMI &lt;dbl&gt;, under-five deaths &lt;dbl&gt;, Polio &lt;dbl&gt;,
+## #   Total expenditure &lt;dbl&gt;, Diphtheria &lt;dbl&gt;, HIV/AIDS &lt;dbl&gt;, GDP &lt;dbl&gt;,
+## #   Population &lt;dbl&gt;, thinness  1-19 years &lt;dbl&gt;, thinness 5-9 years &lt;dbl&gt;,
+## #   Income composition of resources &lt;dbl&gt;, Schooling &lt;dbl&gt;</code></pre>
+</div>
+<div id="exploring-dataset" class="section level2">
+<h2>Exploring Dataset:</h2>
+<p>Now, I will conduct some primary data visualization to explore the dataset with scatter plot and bar diagram as follows.</p>
+</div>
+<div id="gdp-by-population" class="section level2">
+<h2>GDP by POPULATION</h2>
+<p>The following basic scatter plot is done to understand the relation between Population and GDP. It shows countries with highest GDP has lower population.
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+## Life Expectancy by Year:</p>
+<p>To know whether the Life Expectancy is changing by Year or not I have chosen one Country(Canada). Here, it shows
+that in the Year 2006 to 2008 it has changed and then resulted the same ages of life expectancy.
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+## Hepatitis B by Alcohol:
+This plot shows how these Alcohol and Hepatitis B are related.This plot shows the percent of immunization for Hepatitis B are not positively related to Alcohol consumption,where Alcohol is recorded per capita (15+) consumption (in litres of pure alcohol) and Hepatitis B (HepB) as immunization coverage among 1-year-olds (%).</p>
+<pre class="r"><code>library(stats)
+dfsc &lt;- data.frame(le$Alcohol, le$`Hepatitis B`)
+scatter.smooth(x=le$Alcohol, y=le$`Hepatitis B`, main=&quot;Alcohol vs Hepatitis B&quot;)</code></pre>
+<p><img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+## Adult Mortality by Alcohol:
+Here the variable Adult Mortality Rates are calculated for both sexes (probability of dying between 15 and 60 years per 1000 population). The more Alcohol consumption is not indicating higher Adult Mortality rate.
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+## Adding Linear Regression lines to the plotted variables
+Before fitting the Linear Regression model with one independent variable,I have visualized the relationship between some independent variables with the dependent variable,Life expectancy.</p>
+</div>
+<div id="life-expectancy-by-gdp" class="section level2">
+<h2>Life expectancy by GDP:</h2>
+<p><img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+## Life expectancy by Adult Mortality:
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+## Life expectancy by Percentage Expenditure:
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+## Life Expectancy by Income composition of resources:
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+## Life Expectancy by Schooling:
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+## Fitting and Interpretting Linear Regression Model:</p>
+<p>In this data set there are several independent variables, but for fitting Linear Regression model I have chosen one predictor, namely Schooling for further steps.Now, the goal is to predict Life Expectancy from Schooling.The function is: Life Expectancy = a + b*Schooling where, “a” and “b” are the intercept and the slope respectively.</p>
+</div>
+<div id="step-1-specify-model" class="section level2">
+<h2>Step 1: Specify model</h2>
+<pre><code>## Linear Regression Model Specification (regression)</code></pre>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

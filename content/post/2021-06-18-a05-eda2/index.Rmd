@@ -1,0 +1,127 @@
+---
+title: 'A05: EDA2'
+author: R package build
+date: '2021-06-18'
+slug: a05-eda2
+categories:
+  - ggplot2
+  - Tidyverse
+tags: []
+---
+## Exploratory Data Analysis:
+This is my second exploratory analysis report for the course of Fundamentals of Business Analysis. This report concerns a dataset about Crimes report from 2001 of a city of USA. Here, I have performed some very basic analysis with the dataset.
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(ggplot2)
+```
+## Dataset: Crimes-2001 to present data (Chicago City) 
+
+This dataset is about reported incidents of crime (with the exception of murders where data exists for each victim) that occurred in the City of Chicago from 2001 to the most recent days. 
+
+Data is extracted from the Chicago Police Department's CLEAR (Citizen Law Enforcement Analysis and Reporting) system.
+This dataset seems interesting to me because, I think these data will result some significant results that might be the best for visualization. Also, my attraction for crime series or movies instigates me to chose this dataset.  
+
+The data is available online at the following link as Crimes_-_2001_to_Present.csv: https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present-Dashboard/5cd6-ry5g 
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+crime <- read_csv("Crimes_-_2001_to_Present1.csv")
+crime
+```
+## Initial Analysis Questions:
+
+QUESTION_1: Does the number of reported crime vary by year and by District?
+QUESTION_2: Which primary type of reported crime occurrence was the highest and in which year?
+QUESTION_3: Which primary type of reported crime was highest and in which police District?
+QUESTION_4: Are there any specific area where the primary types of reported crime took place?
+
+## Discoveries & Insights:
+
+The above four questions will be answered by the following visualization.
+
+From the following two histogram it is clear that the reported crime mainly occurred in early 2000's and from 2015 to 2020.From the following histogram for the Year 2015 to 2020 it is clear that the reported crime was highest in 2016 to 2018 and then decrease in 2019.So, the crime was varied by year.
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(hrbrthemes)
+crime %>%
+  ggplot( aes(x=Year)) +
+    geom_histogram( binwidth=1, fill="#69b3a2", color="#e9ecef", alpha=0.9) +
+    ggtitle("Number of reported crimes by Year") + labs(x= "Year", y= "Count") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(hrbrthemes)
+bar <- crime %>%
+  filter( Year >= 2015 ) %>%
+  ggplot( aes(x=Year)) +
+    geom_histogram( binwidth=1, fill="#69b3a2", color="#e9ecef", alpha=0.9) +
+    ggtitle("Number of reported crimes by Year") + labs(x= "Year", y= "Count") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+bar  
+```
+In the dataset the variable District refers the police district where the incidents occurs. From the bar diagram analysis it is observed that the maximum number of crime occurs in the district 011 and the minimum number of crime happen in the police district of 020.Hence, it is clear that the reported crime varied by District.
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(plyr)
+df <-data.frame(crime$District)
+#head(df)
+ggplot(df) + geom_bar(aes(x=crime.District), color="blue", fill=rgb(0.1,0.4,0.5,0.7))
+```
+Now, we look at the number of reported crimes by Arrest, arrested or not.This basic bar diagram shows that the total number of arrest is less than half of the number not arrested. This indicates that most of the crime was not so severe.  
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(plyr) 
+df_arrest <-data.frame(crime$Arrest)
+#head(df_arrest)
+ggplot(df_arrest) + geom_bar(aes(x=crime.Arrest), color="gray", fill=rgb(0.1,0.4,0.5,0.7)) +
+  labs(title = "Total count of Arrest")
+```
+The count of the Number of Reported Crimes by domestic represents that the fewer number of reported crime was related to domestic.In the dataset the variable, "Domestic" indicates whether the incident was domestic-related as defined by the Illinois Domestic Violence Act. 
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(plyr)
+df_domestic <-data.frame(crime$Domestic)
+#head(df_domestic)
+ggplot(df_domestic) + geom_bar(aes(x=crime.Domestic), color="gray", fill=rgb(0.1,0.4,0.5,0.7)) +
+labs(title = "Total count of Domestic")
+```
+Here, the relationship between District (y) and Ward (x) of the reported crime is represented. Whether arrested or not for each reported crime is represented through circle size.And the color is showing whether the incident was related to domestic violence or not. 
+```{r warning=FALSE, message=FALSE, echo= FALSE}
+library(ggplot2)
+library(hrbrthemes)
+library(viridis)
+buble <- crime %>% filter(Year=="2020") %>% dplyr::select(-Year)
+ggplot(buble, aes(x=Ward, y=District, size = Arrest, color=Domestic)) +
+    geom_point(alpha=0.5)
+```
+The following heatmap data visualization shows in which year the primary type of reported crime is more clustered. The deeper color scale the higher the incident happened.In 2001 the TRAFFICKING and ROBBERY was most explicit.Non-criminal activities was highest in 2015. In 2018 the theft, criminal damage, domestic violence and homicide was the most prominent primary type of reported crime.   
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+table1 <- table(crime$Year, crime$`Primary Type`)
+heatmap(table1, Colv = NA, Rowv = NA, scale="column")
+```
+Now the question comes in which District (police area) the primary type of reported crime incident happened?
+The following heatmap visualize the hierarchical clustering of crime type. it is clear that, in 020 district area there are no noticeable types of crime where as in 008 and 011 district the crime was reported most.
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+table2 <- table(crime$District, crime$`Primary Type`)
+heatmap(table2, Colv = NA, Rowv = NA, scale="column")
+```
+STALKING, BATTERY and CRIMINAL DAMAGE, consecutively, are the primary types of crime that took places in almost all community area. That means,there is no speific area where any specific primary types of crime took place. 
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+table3 <- table(crime$`Primary Type`, crime$`Community Area`)
+heatmap(table3, Colv = NA, Rowv = NA, scale="column")
+```
+To understand whether there any common primary types that falls under FBI crime classification the following plot is done. It is explicit from the heatmap that only CRIMINAL TRESPASS and HUMAN TRAFFICKING falls under multiple FBI crime classification when others primary types of crimes can be described as only one FBI code. 
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+table5 <- table(crime$`Primary Type`, crime$`FBI Code`)
+heatmap(table5, Colv = NA, Rowv = NA, scale="column")
+```
+## Issues related to dataset 
+
+After selecting the data set, when I start making analysis,I failed to explore the data set in detail as I could not enter to the provided link that are given to the respective variable name.I have found that almost all the variables are logical or categorical in the crime data set which makes a problem for me. As, it seems difficult to plot categorical data than the numeric data to me.For instance, I could not plot scatter plot without numeric data.Also, the data set does not add much exciting results as I thought it might be.And, for reducing the file size when i reduced some columns, I have found that some other data also missing that makes my visualization confusing than earlie
+## Summary 
+
+The crime dataset of Chigago city gives a summary of the crime incidents happening from 2001 upto present, excluding most recent seven days data.It is clear from the above very basic analysis that how the reported differ by year and police district. In some District there is no crime reported. 
+
+In 2001 the TRAFFICKING and ROBBERY was most explicit, in 2015 non-criminal activities was highest, and in 2018 the theft, criminal damage, domestic violence and homicide was the most prominent primary type of reported crime.

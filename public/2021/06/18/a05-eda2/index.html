@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.83.1" />
+
+
+<title>A05: EDA2 - Tarana-Fundamentals of Data Analystics</title>
+<meta property="og:title" content="A05: EDA2 - Tarana-Fundamentals of Data Analystics">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/ToTheSky21">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/IslamTajnin">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">5 min read</span>
+    
+
+    <h1 class="article-title">A05: EDA2</h1>
+
+    
+    <span class="article-date">2021-06-18</span>
+    
+
+    <div class="article-content">
+      
+<script src="/2021/06/18/a05-eda2/index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="exploratory-data-analysis" class="section level2">
+<h2>Exploratory Data Analysis:</h2>
+<p>This is my second exploratory analysis report for the course of Fundamentals of Business Analysis. This report concerns a dataset about Crimes report from 2001 of a city of USA. Here, I have performed some very basic analysis with the dataset.</p>
+</div>
+<div id="dataset-crimes-2001-to-present-data-chicago-city" class="section level2">
+<h2>Dataset: Crimes-2001 to present data (Chicago City)</h2>
+<p>This dataset is about reported incidents of crime (with the exception of murders where data exists for each victim) that occurred in the City of Chicago from 2001 to the most recent days.</p>
+<p>Data is extracted from the Chicago Police Department’s CLEAR (Citizen Law Enforcement Analysis and Reporting) system.
+This dataset seems interesting to me because, I think these data will result some significant results that might be the best for visualization. Also, my attraction for crime series or movies instigates me to chose this dataset.</p>
+<p>The data is available online at the following link as Crimes_-_2001_to_Present.csv: <a href="https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present-Dashboard/5cd6-ry5g" class="uri">https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present-Dashboard/5cd6-ry5g</a></p>
+<pre><code>## # A tibble: 1,048,575 x 10
+##    IUCR  `Primary Type`    Arrest Domestic  Beat District  Ward `Community Area`
+##    &lt;chr&gt; &lt;chr&gt;             &lt;lgl&gt;  &lt;lgl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;            &lt;dbl&gt;
+##  1 486   BATTERY           FALSE  TRUE       924        9    12               61
+##  2 870   THEFT             FALSE  FALSE     1511       15    29               25
+##  3 810   THEFT             FALSE  TRUE       631        6     8               44
+##  4 2023  NARCOTICS         TRUE   FALSE     1412       14    35               21
+##  5 560   ASSAULT           FALSE  TRUE      1522       15    28               25
+##  6 610   BURGLARY          FALSE  FALSE      614        6    21               71
+##  7 620   BURGLARY          FALSE  FALSE     1434       14    32               24
+##  8 860   THEFT             TRUE   FALSE     1034       10    25               31
+##  9 320   ROBBERY           FALSE  TRUE      1222       12    27               27
+## 10 1153  DECEPTIVE PRACTI… FALSE  FALSE      824        8    15               63
+## # … with 1,048,565 more rows, and 2 more variables: FBI Code &lt;chr&gt;, Year &lt;dbl&gt;</code></pre>
+</div>
+<div id="initial-analysis-questions" class="section level2">
+<h2>Initial Analysis Questions:</h2>
+<p>QUESTION_1: Does the number of reported crime vary by year and by District?
+QUESTION_2: Which primary type of reported crime occurrence was the highest and in which year?
+QUESTION_3: Which primary type of reported crime was highest and in which police District?
+QUESTION_4: Are there any specific area where the primary types of reported crime took place?</p>
+</div>
+<div id="discoveries-insights" class="section level2">
+<h2>Discoveries &amp; Insights:</h2>
+<p>The above four questions will be answered by the following visualization.</p>
+<p>From the following two histogram it is clear that the reported crime mainly occurred in early 2000’s and from 2015 to 2020.From the following histogram for the Year 2015 to 2020 it is clear that the reported crime was highest in 2016 to 2018 and then decrease in 2019.So, the crime was varied by year.
+<img src="/2021/06/18/a05-eda2/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="/2021/06/18/a05-eda2/index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+In the dataset the variable District refers the police district where the incidents occurs. From the bar diagram analysis it is observed that the maximum number of crime occurs in the district 011 and the minimum number of crime happen in the police district of 020.Hence, it is clear that the reported crime varied by District.
+<img src="/2021/06/18/a05-eda2/index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+Now, we look at the number of reported crimes by Arrest, arrested or not.This basic bar diagram shows that the total number of arrest is less than half of the number not arrested. This indicates that most of the crime was not so severe.<br />
+<img src="/2021/06/18/a05-eda2/index_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+The count of the Number of Reported Crimes by domestic represents that the fewer number of reported crime was related to domestic.In the dataset the variable, “Domestic” indicates whether the incident was domestic-related as defined by the Illinois Domestic Violence Act.
+<img src="/2021/06/18/a05-eda2/index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+Here, the relationship between District (y) and Ward (x) of the reported crime is represented. Whether arrested or not for each reported crime is represented through circle size.And the color is showing whether the incident was related to domestic violence or not.
+<img src="/2021/06/18/a05-eda2/index_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+The following heatmap data visualization shows in which year the primary type of reported crime is more clustered. The deeper color scale the higher the incident happened.In 2001 the TRAFFICKING and ROBBERY was most explicit.Non-criminal activities was highest in 2015. In 2018 the theft, criminal damage, domestic violence and homicide was the most prominent primary type of reported crime.</p>
+<p><img src="/2021/06/18/a05-eda2/index_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+Now the question comes in which District (police area) the primary type of reported crime incident happened?
+The following heatmap visualize the hierarchical clustering of crime type. it is clear that, in 020 district area there are no noticeable types of crime where as in 008 and 011 district the crime was reported most.
+<img src="/2021/06/18/a05-eda2/index_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+STALKING, BATTERY and CRIMINAL DAMAGE, consecutively, are the primary types of crime that took places in almost all community area. That means,there is no speific area where any specific primary types of crime took place.
+<img src="/2021/06/18/a05-eda2/index_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+To understand whether there any common primary types that falls under FBI crime classification the following plot is done. It is explicit from the heatmap that only CRIMINAL TRESPASS and HUMAN TRAFFICKING falls under multiple FBI crime classification when others primary types of crimes can be described as only one FBI code.
+<img src="/2021/06/18/a05-eda2/index_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+## Issues related to dataset</p>
+<p>After selecting the data set, when I start making analysis,I failed to explore the data set in detail as I could not enter to the provided link that are given to the respective variable name.I have found that almost all the variables are logical or categorical in the crime data set which makes a problem for me. As, it seems difficult to plot categorical data than the numeric data to me.For instance, I could not plot scatter plot without numeric data.Also, the data set does not add much exciting results as I thought it might be.And, for reducing the file size when i reduced some columns, I have found that some other data also missing that makes my visualization confusing than earlier.</p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>The crime dataset of Chigago city gives a summary of the crime incidents happening from 2001 upto present, excluding most recent seven days data.It is clear from the above very basic analysis that how the reported differ by year and police district. In some District there is no crime reported.</p>
+<p>In 2001 the TRAFFICKING and ROBBERY was most explicit, in 2015 non-criminal activities was highest, and in 2018 the theft, criminal damage, domestic violence and homicide was the most prominent primary type of reported crime.</p>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+

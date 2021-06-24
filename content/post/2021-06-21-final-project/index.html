@@ -1,0 +1,106 @@
+---
+title: Final Project
+author: R package build
+date: '2021-06-21'
+slug: final-project
+categories:
+  - tidymodels
+  - Tidyverse
+  - ggplot2
+tags: []
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="data-analysis-to-fit-linear-regression-model" class="section level2">
+<h2>Data Analysis to fit Linear Regression Model:</h2>
+<p>This is an exploratory data analysis report to fit the simple Linear Regression Model. This report concerns a dataset about Life Expectancy.</p>
+</div>
+<div id="categorical-and-numerical-explanatory-variables-analysis" class="section level2">
+<h2>Categorical and numerical explanatory variables analysis:</h2>
+<p>For finding whether there is any relation between the dataset or not, I have done some basic analysis to find the dependent and independent variables.From these analysis, the variable Life Expectancy has came out as dependent variable(y) as it is effected by other predictive variables.</p>
+</div>
+<div id="data-life-expectancy" class="section level2">
+<h2>Data: Life Expectancy</h2>
+<p>This Dataset is about Life Expectancy of different countries with several related variables(See below on printed Head of dataset). The data was collected from WHO and United Nations website aiming that this will help in suggesting a country which area should be given importance in order to efficiently improve the life expectancy of its population.Since the observations this dataset are based on different countries, it will be easier for a country to determine the predicting factor which is contributing to lower value of life expectancy.</p>
+<p>I have collected this dataset from the following website: <a href="https://www.kaggle.com/kumarajarshi/life-expectancy-who" class="uri">https://www.kaggle.com/kumarajarshi/life-expectancy-who</a></p>
+<pre><code>## # A tibble: 6 x 22
+##   Country  Year Status `Life expectanc… `Adult Mortalit… `infant deaths` Alcohol
+##   &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;             &lt;dbl&gt;            &lt;dbl&gt;           &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Afghan…  2015 Devel…             65                263              62    0.01
+## 2 Afghan…  2014 Devel…             59.9              271              64    0.01
+## 3 Afghan…  2013 Devel…             59.9              268              66    0.01
+## 4 Afghan…  2012 Devel…             59.5              272              69    0.01
+## 5 Afghan…  2011 Devel…             59.2              275              71    0.01
+## 6 Afghan…  2010 Devel…             58.8              279              74    0.01
+## # … with 15 more variables: percentage expenditure &lt;dbl&gt;, Hepatitis B &lt;dbl&gt;,
+## #   Measles &lt;dbl&gt;, BMI &lt;dbl&gt;, under-five deaths &lt;dbl&gt;, Polio &lt;dbl&gt;,
+## #   Total expenditure &lt;dbl&gt;, Diphtheria &lt;dbl&gt;, HIV/AIDS &lt;dbl&gt;, GDP &lt;dbl&gt;,
+## #   Population &lt;dbl&gt;, thinness  1-19 years &lt;dbl&gt;, thinness 5-9 years &lt;dbl&gt;,
+## #   Income composition of resources &lt;dbl&gt;, Schooling &lt;dbl&gt;</code></pre>
+</div>
+<div id="exploring-dataset" class="section level2">
+<h2>Exploring Dataset:</h2>
+<p>Now, I will conduct some primary data visualization to explore the dataset with scatter plot and bar diagram which are shown below.</p>
+</div>
+<div id="gdp-by-population" class="section level2">
+<h2>GDP by POPULATION</h2>
+<p>The following basic scatter plot is done to understand the relation between Population and GDP. It shows countries with highest GDP has lower population.
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+## Life Expectancy by Year:</p>
+<p>To know whether the Life Expectancy is changing by Year or not I have chosen one Country(Canada). Here, it shows
+that in the Year 2006 to 2008 it has changed and then resulted the same ages of life expectancy.
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+## Hepatitis B by Alcohol:
+This plot shows how these Alcohol and Hepatitis B are related.This plot shows the percent of immunization for Hepatitis B are not positively related to Alcohol consumption,where Alcohol is recorded per capita (15+) consumption (in litres of pure alcohol) and Hepatitis B (HepB) as immunization coverage among 1-year-olds (%).
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+## Adult Mortality by Alcohol:
+Here the variable Adult Mortality Rates are calculated for both sexes (probability of dying between 15 and 60 years per 1000 population). The more Alcohol consumption is not indicating higher Adult Mortality rate.
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+## Adding Linear Regression lines to the plotted variables
+Before fitting the Linear Regression model with one independent variable,I have visualized the relationship between some independent variables with the dependent variable,Life expectancy.</p>
+<p>##Life expectancy by GDP:
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+## Life expectancy by Adult Mortality:
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+## Life expectancy by Percentage Expenditure:
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+## Life Expectancy by Income composition of resources:
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+## Life Expectancy by Schooling:
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+## Fitting and Interpretting Linear Regression Model:</p>
+<p>In this data set there are several independent variables, but for fitting Linear Regression model I have chosen one predictor, namely Schooling for further steps.Now, the goal is to predict Life Expectancy(in age) from Schooling, number of years of Schooling(years).</p>
+<p>The function is: Life Expectancy = a + b*Schooling where, “a” and “b” are the intercept and the slope respectively.</p>
+</div>
+<div id="step-1-specify-model" class="section level2">
+<h2>Step 1: Specify model</h2>
+<pre><code>## Linear Regression Model Specification (regression)</code></pre>
+</div>
+<div id="step-2-set-model-fitting-engine" class="section level2">
+<h2>Step 2: Set model fitting <em>engine</em></h2>
+<pre class="r"><code>linear_reg() %&gt;%
+  set_engine(&quot;lm&quot;) # lm: linear model</code></pre>
+<pre><code>## Linear Regression Model Specification (regression)
+## 
+## Computational engine: lm</code></pre>
+</div>
+<div id="step-3-fit-model-estimate-parameters" class="section level2">
+<h2>Step 3: Fit model &amp; estimate parameters</h2>
+<pre class="r"><code>linear_reg() %&gt;%
+  set_engine(&quot;lm&quot;) %&gt;%
+  fit(le$`Life expectancy` ~ Schooling, data = le) %&gt;%
+  tidy()</code></pre>
+<pre><code>## # A tibble: 2 x 5
+##   term        estimate std.error statistic p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)    44.1     0.437      101.        0
+## 2 Schooling       2.10    0.0351      60.0       0</code></pre>
+</div>
+<div id="interpretation-of-model-coefficients" class="section level2">
+<h2>Interpretation of model coefficients:</h2>
+<p>The values of the intercept (“a” value) and the slope (“b” value) for the Schooling. These “a” and “b” values plot a line between all the points of the data. So in this case, if there is a person who goes to school for 12 years,when a is 44.11 and b is 2.103, the model predicts (on average) that Life Expectancy in age is around 44.11 + (2.103 * 12) = 69.346 age.</p>
+<p>In another words,Slope means for each additional year a person’s Life expectancy is increased, the Schooling year is also expected to be longer, on average, by 2.10 years.</p>
+<p>And the intercept means a person who have 0 years school are expected to be 44.11 ages of Life Expectancy , on average.</p>
+</div>
