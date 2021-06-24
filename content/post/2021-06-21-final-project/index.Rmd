@@ -85,7 +85,7 @@ le %>%
     ggtitle("GDP of WHO Life expectancy dataset") +
     theme_ipsum()
 ```
-## Bosxplot of Schooling by Percentage Expenditure
+## Bosxplot of Schooling by Percentage Expenditure:
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(hrbrthemes)
