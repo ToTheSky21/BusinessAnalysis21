@@ -22,7 +22,7 @@ options(dplyr.print_min = 10, dplyr.print_max = 6)
 ```
 ## Categorical and numerical explanatory variables analysis:
 
-For finding whether there is any relation between the dataset or not, I have done some basic analysis to find the dependent and independent variables.From these analysis, the variable Life Expectancy has came out as dependent variable(y) as it is effected by other predictive variables.  
+For finding whether there is any relation between the dataset or not, I have done some basic analysis to find the dependent and independent variables.From these analysis, the variable, Life Expectancy has came out as dependent variable(y) as it is effected by other predictive variables.  
 
 ## Data: Life Expectancy
 
@@ -38,7 +38,7 @@ head(le)
 Now, I will conduct some primary data visualization to explore the dataset with histogram, density plot, scatter plot, box plot and bar diagram which are shown below.
 
 ## Summary of Life expectancy, Adult Mortality and Hepatitis B:
-The following visualizations are done to know the Summary of some of the variables at a glance which are known univariate analysis.
+The following visualizations are done to know the Summary of some of the variables at a glance which are known as univariate analysis.
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(hrbrthemes)
 h1 <- le %>%
@@ -51,7 +51,7 @@ h1 <- le %>%
     )
 h1
 ```
-
+The above distribution, it is clear that the modal Life expectancy count falls between 72 to 78 ages.Very few people exists with Life expectancy of age around 90.
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(hrbrthemes)
 h2 <- le %>%
@@ -64,7 +64,7 @@ h2 <- le %>%
     )
 h2
 ```
-
+Here, the summary of Adult Mortality Rates of both sexes (probability of dying between 15 and 60 years per 1000 population) is representing that the highest number lies around the number 25.This means the modal value is around 25 for Adult mortality.
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(hrbrthemes)
 h3 <- le %>%
@@ -77,6 +77,7 @@ h3 <- le %>%
     )
 h3
 ```
+Hepatitis B (HepB) implies the immunization coverage among 1-year-olds (%) in the dataset. In the graph it is observed that the highest values of coverage is around 100%. 
 ## GDP at a glance:
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 le %>%
@@ -85,6 +86,7 @@ le %>%
     ggtitle("GDP of WHO Life expectancy dataset") +
     theme_ipsum()
 ```
+The distribution of GDP, Gross Domestic Product per capita (in USD), shows that most of the countries per caripa GDP is below 12,000 USD.
 ## Bosxplot of Schooling by Percentage Expenditure:
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(tidyverse)
@@ -102,8 +104,9 @@ le %>%
     ggtitle("Boxplot of Schooling by Total Expenditure") +
     xlab("Total expenditure")
 ```
+The boxplot of total expenditure, General government expenditure on health as a percentage of total government,  expenditure (%)
+
 ## GDP by POPULATION
-The following basic scatter plot is done to understand the relation between Population and GDP. It shows countries with highest GDP has lower population.
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(ggplot2)
 library(hrbrthemes)
@@ -116,9 +119,9 @@ ggplot(df1, mapping=aes(x=le$Population, y=le$GDP, alpha=0.6)) +
      y = "GDP") +
     theme_ipsum()
 ```
+The following basic scatter plot is done to understand the relation between Population and GDP. It shows countries with highest GDP has lower population.
+
 ## Life Expectancy by Year:
-To know whether the Life Expectancy is changing by Year or not I have chosen one Country(Canada). Here, it shows
-that in the Year 2006 to 2008 it has changed and then resulted the same ages of life expectancy. 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(ggplot2)
 library(tidyverse)
@@ -132,16 +135,18 @@ ggplot(df2, mapping=aes(x=df2$Year, y=df2$`Life expectancy`)) +
      x = "Year",
      y = "Life expectancy")
 ```
-## Hepatitis B by Alcohol:
-This plot shows how these Alcohol and Hepatitis B are related.This plot shows the percent of immunization for Hepatitis B are not positively related to Alcohol consumption,where Alcohol is recorded per capita (15+) consumption (in litres of pure alcohol) and Hepatitis B (HepB) as immunization coverage among 1-year-olds (%).
+To know whether the Life Expectancy is changing by Year or not I have chosen one Country(Canada). Here, the above bar diagram shows that in the Year 2006 to 2008 it has changed and then resulted the same ages of life expectancy. 
+
+# Hepatitis B by Alcohol:
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(stats)
 dfsc <- data.frame(le$Alcohol, le$`Hepatitis B`)
 scatter.smooth(x=le$Alcohol, y=le$`Hepatitis B`, main="Alcohol vs Hepatitis B")
 
 ```
+This plot shows how these Alcohol and Hepatitis B are related.This plot shows the percent of immunization for Hepatitis B are not positively related to Alcohol consumption,where Alcohol is recorded per capita (15+) consumption (in litres of pure alcohol) and Hepatitis B (HepB) as immunization coverage among 1-year-olds (%).
+
 ## Adult Mortality by Alcohol:
-Here the variable Adult Mortality Rates are calculated for both sexes (probability of dying between 15 and 60 years per 1000 population). The more Alcohol consumption is not indicating higher Adult Mortality rate.
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(ggplot2)
 library(hrbrthemes)
@@ -154,7 +159,10 @@ ggplot(df3, mapping=aes(x=le$Alcohol, y=le$`Adult Mortality`, alpha=0.5)) +
      y = "Adult Mortality") +
     theme_ipsum()
 ```
+Here the variable Adult Mortality Rates are calculated for both sexes (probability of dying between 15 and 60 years per 1000 population). The more Alcohol consumption is not indicating higher Adult Mortality rate.
+
 ## Adding Linear Regression lines to the plotted variables 
+
 Before fitting the Linear Regression model with one independent variable,I have visualized the relationship between some independent variables with the dependent variable,Life expectancy. 
 
 ##Life expectancy by GDP:
@@ -257,3 +265,5 @@ The values of the intercept (“β0” value) and the slope (“β1” value) fo
 In another words,Slope means for each additional year a person's  Life expectancy is increased, the Schooling year is also expected to be longer, on average, by 2.10 years.
 
 And the intercept means a person who have 0 years school are expected to be 44.11 ages of Life Expectancy , on average. 
+
+## Summary:
