@@ -1,0 +1,248 @@
+---
+title: Regression Models
+author: R package build
+date: '2021-07-09'
+slug: regression-models
+categories:
+  - ggplot2
+  - Tidyverse
+tags: []
+---
+## Dataset at a glance:
+A Professor of machine learning, when planned to buy diamond ring for engagement, came to know that the pricing diamonds is not so easy.As a consequence of that, he collects data from three different wholesalers on 440 different diamonds. Now he has information on prices of these diamonds along with their characteristic features such as color, clarity, cut and carat (famous 4Cs) besides polish, symmetry and certification. These important features of Diamond are the independent variables in this data set to determine the price, which is a response or dependent variable. Some rows of the data set is printed below:
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+library(tidyverse)
+library(readxl)
+DiamondRing <- read_xlsx("Professor_Proposes_Data.xlsx")
+head(DiamondRing)
+```
+## Data Analysis:
+To determine which feature or variable is most important and how they are related to the diamond pricing, data analysis is performed here. The professor has identified a diamond which interests him. Now to ensure that the price he pays for the diamond is worthy or not a regression model is built here following some preliminary data analysis.
+For this exploratory data analysis, the Univariate Analysis is performed here first with relevant variables and then Bivariate Analysis is made as described below:
+
+## Univariate Analysis of Metric and Non-Metric Data: 
+In the Professor's Diamond Ring data set the variables Price, Carat, Clarity are Metric data, where as the variables Color, Cut, Certification, Polish, Symmetry are Non-Metric Data. Now, lets have a look at some of the the summary statistics and distributions of metric variables: Price, Carat and Clarity first.
+
+## Price
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+DiamondRing %>%
+  summarise(average_price= mean(Price), median_price = median(Price), var_price=var(Price), sd_price=sd(Price))
+```
+From the above summary statistics of price we observe that mean and median are different, where the mean, 7.17 is lower than the median, 2169. So, we can assume that the median is the better estimate.The visualization of price variables will give more clear idea about the best measure. 
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+  quantile(DiamondRing$Price)
+```
+Here, we find that the minimum price is $160 and the maximum is $3145, where the 50th quantile representing median as shown above.
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+ggplot(DiamondRing, aes(y = Price)) +
+  geom_boxplot()
+```
+In the above Boxplot of price, the median value($2169) has more variability to min value than max value.
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+DiamondRing %>%
+  summarise(IQR_price= quantile(Price, 0.75) - quantile(Price, 0.25))
+```
+The IQR or interquartile range measures the difference between Q3 and Q1, which is 2492.5 here.
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+ IQR <- quantile(DiamondRing$Price, 0.75) - quantile(DiamondRing$Price, 0.25)
+lower_threshold <- quantile(DiamondRing$Price, 0.25) - 1.5 * IQR
+upper_threshold<- quantile(DiamondRing$Price, 0.75) + 1.5 * IQR
+lower_threshold
+upper_threshold
+DiamondRing %>% filter(Price < lower_threshold | Price > upper_threshold ) %>%
+  select(Price)
+```
+Here it is shown that there is no outlier. To find whether there is any outliers in the price variable, upper and lower interval is defined measuring the threshold as: Price < Q1 − 1.5 × IQR or Price > Q3 + 1.5 × IQR.
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+library(graphics)
+h1 <- DiamondRing$Price
+hist(h1,
+     main="Price Distribution of Diamond",
+     xlab="Price in dollar",
+     col="skyblue",freq=FALSE
+)
+```
+The above distribution of price shows that the data are lying between two groups, 0 to $1000 and $1500 to $3500.There is no diamond with price ranges between $1000 to $1500.
+
+## Carat
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+DiamondRing %>%
+  summarise(average_carat= mean(Carat), median_carat = median(Carat), var_carat=var(Carat), sd_carat=sd(Carat))
+```
+In case of Carat, the mean value is also less than the median from which we can assume the data is left-skewed.
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+  quantile(DiamondRing$Carat)
+```
+The minimum value for Carat is 0.09, maximum value is 1.58 and the second quartile is 0.81, which is the median.
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+DiamondRing %>%
+  summarise(IQR_carat= quantile(DiamondRing$Carat, 0.75) - quantile(DiamondRing$Carat, 0.25))
+```
+For variable Carat, the interquartile range or the difference between Q3 and Q1 is 0.71.
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+ iqr <- quantile(DiamondRing$Carat, 0.75) - quantile(DiamondRing$Carat, 0.25)
+lower_threshold <- quantile(DiamondRing$Carat, 0.25) - 1.5 * iqr
+upper_threshold <- quantile(DiamondRing$Carat, 0.75) + 1.5 * iqr
+DiamondRing %>%
+ summarise(lower_threshold , upper_threshold) 
+DiamondRing %>%
+filter(Carat < lower_threshold | Carat > upper_threshold ) %>%
+  select(Carat) 
+```
+There is no substantial difference from one data point to others is case of the feature Carat of diamond.
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+library(graphics)
+h2 <- DiamondRing$Carat
+hist(h2,
+     main="Carat of Diamond",
+     xlab="Carat",
+     col="lightgreen",freq=FALSE
+)
+```
+This distribution shows almost same pattern as price.The diamonds appear to be in two groups 0.0 to 0.30 and 0.81
+to 1.58 carats. Here,the median value, 0.81 is the better estimate than the average value,0.67.
+
+## Clarity
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+ DiamondRing %>%
+ count(Clarity, sort = TRUE) 
+```
+
+## Univariate analysis with non-metric data:
+For non-metric data, some basic summary statistics and visualization are performed below:
+# Color
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+library(ggplot2)
+  color <- c(DiamondRing$Colour)
+  ggplot(data.frame(color), mapping=aes(x=color)) +
+  geom_bar(fill="skyblue")
+```
+The Colours "I" has the highest frequency of 79 and the Colors "L" has lowest frequency of 12.
+# Cut 
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+library(ggplot2)
+  cut <- c(DiamondRing$Cut)
+  ggplot(data.frame(cut), mapping=aes(x=cut)) +
+  geom_bar(fill="lightgreen")
+```
+In above distribution, diamond Cut has the highest frequency for the class Excellent(X) and lowest for Good(G).
+# Certification 
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+library(ggplot2)
+  certification <- c(DiamondRing$Certification)
+  ggplot(data.frame(certification), mapping=aes(x=certification)) +
+  geom_bar(fill="skyblue")
+```
+The summary of diamond certification shows that EGL and GIA are used most frequently.
+# Polish 
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+library(ggplot2)
+  polish <- c(DiamondRing$Polish)
+  ggplot(data.frame(polish), mapping=aes(x=polish)) +
+  geom_bar(fill="lightgreen")
+```
+The very good (V) polish for diamond is most popular where Ideal and Fair are least frequenty used.
+# Symmetry
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+library(ggplot2)
+  symmetry <- c(DiamondRing$Symmetry)
+  ggplot(data.frame(symmetry), mapping=aes(x=symmetry)) +
+  geom_bar(fill="skyblue")
+```
+The diamonds with Good(G) and Very good(V) symmetry has more frequency than those of Fair, excellent and Ideal symmetry.
+## Bivariate Analysis:
+For Bivariate Analysis, here metric data are used first as follows:
+# Price Vs Carat
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+ggplot(DiamondRing, mapping=aes(Price, Carat)) +
+ geom_point() + labs(title = "Price Vs Carat of Diamonds")
+ #geom_smooth(method = "lm", se = FALSE)
+```
+From the above scatter plot it is clear that the price and carat pf diamonds data are separated by two distinct groups with low carat,
+0.09 to 0.30 diamonds having low prices and higher carat diamonds lies between higher price ranges.
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+ggplot(DiamondRing, mapping=aes(Price, Carat)) +
+ geom_point() + labs(title = "Linear Regression between Price and Carat of Diamonds") +
+ geom_smooth(method = "lm", se = FALSE) 
+   reg_price_carat <- lm(Price ~ Carat, data = DiamondRing)
+summary(reg_price_carat)
+```
+The linear regression coefficient with negative value is surprising with negative residuals. Here, the R square value is 0.86 which indicates that at least some variability in the data, that cannot be accounted for by the model.This is not perfectly linear regression model.
+# Price and Clarity
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+ggplot(DiamondRing, mapping=aes(Price, Clarity)) +
+ geom_point() + labs(title = "Linear Regression between Price and Clarity of Diamonds") +
+ geom_smooth(method = "lm", se = FALSE) 
+   reg_price_clarity <- lm(Price ~ Clarity, data = DiamondRing)
+summary(reg_price_clarity)
+```
+In case of Price and Clarity of Diamonds, the R square value is only 0.31 which means there is variability between these two features of Diamond.
+# Price and Cut
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+ggplot(DiamondRing, mapping=aes(Price, Cut)) +
+ geom_point() + labs(title = "Linear Regression between Price and Cut of Diamonds") +
+ geom_smooth(method = "lm", se = FALSE) 
+   reg_price_cut <- lm(Price ~ Cut, data = DiamondRing)
+summary(reg_price_cut)
+```
+In the above regression using Cut with the dependent variable, Price, the R square value is .10 which means the regression is linear and Cut is an important feature to determine the price of Diamonds.
+# Price and Symmetry
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+ggplot(DiamondRing, mapping=aes(Price, Symmetry)) +
+ geom_point() + labs(title = "Linear Regression between Price and Symmetry of Diamonds") +
+ geom_smooth(method = "lm", se = FALSE) 
+   reg_price_symmetry <- lm(Price ~ Symmetry, data = DiamondRing)
+summary(reg_price_symmetry)
+```
+From the relation between Price and Symmetry of Diamonds, it is observed that the R square value is only 0.05 which means there is no significant relation between 
+these two features of Diamond.
+## Multiple Regression Model
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+m_reg <- lm(Price ~ Carat + Colour + Cut + Clarity + Certification  + Polish, data = DiamondRing)
+summary(m_reg)
+```
+
+The overall R square of the multiple linear regression is 0.97 here, which shows a good fit of the model.The P-value < 2e-16 is indicating highly significant result,
+that means, Carat, some colors (I, J ,K, L) with Clarity except SI3 are significantly related to the outcome variable, Price (based on regression coefficients).Carat, Clarity Color, Cut, Polish and Certification are the main features of price consecutively where as Symmetry has variability with diamond price.
+## Relation of the response with non-metric
+# Price count by Colour
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+DiamondRing %>%
+  ggplot(DiamondRing, mapping=aes(x=Price)) +
+  geom_histogram(bins = 7) +
+  facet_wrap(vars(DiamondRing$Colour))
+```
+The price of "J" colored diamond has the highest value count where the colour "L" has the significantly lower count with higher prices.In case of colour "H" and "I" the  diamond with the lower prices hashighest frequency.
+## # Price by Colour
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+ggplot(data = DiamondRing, mapping = aes(x = Cut, y = Price)) +
+  geom_boxplot()
+```
+The boxplot shows that "Fair" cut diamonds has the highest median value. The only outliers are visible in case of fair cut with lower priced diamonds.
+# Price by Clarity
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+ggplot(data = DiamondRing, mapping = aes(x = Clarity, y = Price)) +
+  geom_boxplot()
+```
+The boxplot of Price and Clarity sows that there are outliers in I1,I2, SI1 and VS2 types of Diamond. The median of clarity SI2 has the highest value.
+## Relation between two non-metric:
+# Colour and Cut
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+DiamondRing %>% 
+  count(Colour, Cut) %>%  
+  ggplot(mapping = aes(x = Colour, y = Cut)) +
+    geom_tile(mapping = aes(fill = n))
+```
+This heatmap shows that how the Color and Cut are correlated. For the excellent Cut almost all colored diamonds has the highest count, most of the excellent cut has the color "H" and "J".For color "D", every Cut has lower count.  
+## Polish and Symmetry
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+ggplot(data = DiamondRing) +
+  geom_count(mapping = aes(x = polish, y = symmetry))
+```
+The above plot shows that, the size of each circle in the plot displays how many observations occurred at each combination of values. "Very good" polish and  "Very good" symmetry has highest observations (125).
+## Summary of Findings
+* The price is the dependent or response variable and the significant determinants are Carat, Clarity and Color. 
+* The features Cut, Certification and Polish also has some relation with followed by the above main determinants.
+* From the regression model estimates, it is also observed that Symmetry of Diamond has no relation with its Price.
+* Professor need to determine the price of diamond ring depending on the features of Carat, Clarity and Color. 
+  The predicted price rage is around $3000 to get more than 1 Carat with featured Color and  Clarity. 

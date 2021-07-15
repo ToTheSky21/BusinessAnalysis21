@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.84.0" />
+
+
+<title>Regression Models - Tarana-Fundamentals of Data Analystics</title>
+<meta property="og:title" content="Regression Models - Tarana-Fundamentals of Data Analystics">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/ToTheSky21">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/IslamTajnin">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">4 min read</span>
+    
+
+    <h1 class="article-title">Regression Models</h1>
+
+    
+    <span class="article-date">2021-07-09</span>
+    
+
+    <div class="article-content">
+      
+<script src="/2021/07/09/regression-models/index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="dataset-at-a-glance" class="section level2">
+<h2>Dataset at a glance:</h2>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.4     ✓ purrr   0.3.4
+## ✓ tibble  3.1.2     ✓ dplyr   1.0.7
+## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(readxl)
+DiamondRing &lt;- read_xlsx(&quot;Professor_Proposes_Data.xlsx&quot;)
+head(DiamondRing)</code></pre>
+<pre><code>## # A tibble: 6 x 9
+##   Carat Colour Clarity Cut   Certification Polish Symmetry Price Wholesaler
+##   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;      &lt;dbl&gt;
+## 1  0.92 I      SI2     G     AGS           V      V         3000          1
+## 2  0.92 I      SI2     V     AGS           G      G         3000          1
+## 3  0.82 F      SI2     I     GIA           X      X         3004          1
+## 4  0.81 G      SI1     I     GIA           X      V         3004          1
+## 5  0.9  J      VS2     V     GIA           V      V         3006          1
+## 6  0.87 F      SI2     I     AGS           G      V         3007          1</code></pre>
+</div>
+<div id="univariate-analysis-of-metric-and-non-metric-data" class="section level2">
+<h2>Univariate Analysis of Metric and Non-Metric Data:</h2>
+<p>In the Professor’s Diamond Ring data set the variables Price, Carat, Clarity are Metric data, where as the variables Color, Cut, Certification, Polish, Symmetry are Non-Metric Data.</p>
+<pre class="r"><code>DiamondRing %&gt;%
+  summarise(average_price= mean(Price), median_price = median(Price), var_price=var(Price), sd_price=sd(Price))</code></pre>
+<pre><code>## # A tibble: 1 x 4
+##   average_price median_price var_price sd_price
+##           &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1         1717.         2169  1382245.    1176.</code></pre>
+<pre class="r"><code>  quantile(DiamondRing$Price)</code></pre>
+<pre><code>##     0%    25%    50%    75%   100% 
+##  160.0  520.0 2169.0 3012.5 3145.0</code></pre>
+<pre class="r"><code>ggplot(DiamondRing, aes(y = Price)) +
+  geom_boxplot()</code></pre>
+<p><img src="/2021/07/09/regression-models/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>DiamondRing %&gt;%
+  summarise(IQR_price= quantile(DiamondRing$Price, 0.75) - quantile(DiamondRing$Price, 0.25))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   IQR_price
+##       &lt;dbl&gt;
+## 1     2492.</code></pre>
+<pre class="r"><code>DiamondRing %&gt;%
+  summarise(average_carat= mean(Carat), median_carat = median(Carat), var_carat=var(Carat), sd_carat=sd(Carat))</code></pre>
+<pre><code>## # A tibble: 1 x 4
+##   average_carat median_carat var_carat sd_carat
+##           &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1         0.669         0.81     0.144    0.380</code></pre>
+<pre class="r"><code>  quantile(DiamondRing$Carat)</code></pre>
+<pre><code>##   0%  25%  50%  75% 100% 
+## 0.09 0.30 0.81 1.01 1.58</code></pre>
+<pre class="r"><code>DiamondRing %&gt;%
+  summarise(IQR_carat= quantile(DiamondRing$Carat, 0.75) - quantile(DiamondRing$Carat, 0.25))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   IQR_carat
+##       &lt;dbl&gt;
+## 1      0.71</code></pre>
+<pre class="r"><code> iqr &lt;- quantile(DiamondRing$Carat, 0.75) - quantile(DiamondRing$Carat, 0.25)
+lower_threshold &lt;- quantile(DiamondRing$Carat, 0.25) - 1.5 * iqr
+upper_threshold &lt;- quantile(DiamondRing$Carat, 0.75) + 1.5 * iqr
+DiamondRing %&gt;%
+ summarise(lower_threshold , upper_threshold)</code></pre>
+<pre><code>## # A tibble: 1 x 2
+##   lower_threshold upper_threshold
+##             &lt;dbl&gt;           &lt;dbl&gt;
+## 1          -0.765            2.08</code></pre>
+<pre class="r"><code>library(graphics)
+h1 &lt;- DiamondRing$Price
+hist(h1,
+     main=&quot;Price Distribution of Diamond&quot;,
+     xlab=&quot;Price in dollar&quot;,
+     col=&quot;skyblue&quot;,freq=FALSE
+)</code></pre>
+<p><img src="/2021/07/09/regression-models/index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>library(graphics)
+h2 &lt;- DiamondRing$Carat
+hist(h2,
+     main=&quot;Carat of Diamond&quot;,
+     xlab=&quot;Carat&quot;,
+     col=&quot;grey&quot;,freq=FALSE
+)</code></pre>
+<p><img src="/2021/07/09/regression-models/index_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+##</p>
+<pre class="r"><code> DiamondRing %&gt;%
+  count(Clarity, sort = TRUE) </code></pre>
+<pre><code>## # A tibble: 9 x 2
+##   Clarity     n
+##   &lt;chr&gt;   &lt;int&gt;
+## 1 SI1       116
+## 2 SI2       110
+## 3 I1         82
+## 4 VS2        41
+## 5 VS1        30
+## 6 I2         28
+## 7 SI3        26
+## 8 VVS2        5
+## 9 VVS1        2</code></pre>
+</div>
+<div id="bivariate-analysis" class="section level2">
+<h2>Bivariate Analysis:</h2>
+<pre class="r"><code>ggplot(DiamondRing, aes(Price, Carat)) +
+ geom_point() +
+ geom_smooth(method = &quot;lm&quot;, se = FALSE)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/2021/07/09/regression-models/index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>#DiamondRing %&gt;%
+  #summarise(correlation_price_carat=cor(DiamondRing$Price, DiamondRing$Carat))
+ mdl_bream &lt;- lm(Price ~ Carat, data = DiamondRing)
+summary(mdl_bream) </code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Price ~ Carat, data = DiamondRing)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1705.8  -165.9  -111.9   135.2   994.7 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  -200.48      43.11   -4.65  4.4e-06 ***
+## Carat        2864.73      56.04   51.12  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 446 on 438 degrees of freedom
+## Multiple R-squared:  0.8564, Adjusted R-squared:  0.8561 
+## F-statistic:  2613 on 1 and 438 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>DiamondRing %&gt;%
+  ggplot(DiamondRing, mapping=aes(x=Price)) +
+  geom_histogram(bins = 7) +
+  facet_wrap(vars(DiamondRing$Colour))</code></pre>
+<p><img src="/2021/07/09/regression-models/index_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<pre class="r"><code> DiamondRing %&gt;%
+  group_by(Colour) %&gt;%
+  summarize(mean_price = mean(Price))</code></pre>
+<pre><code>## # A tibble: 9 x 2
+##   Colour mean_price
+##   &lt;chr&gt;       &lt;dbl&gt;
+## 1 D           2316.
+## 2 E           1552.
+## 3 F           1334.
+## 4 G           2168.
+## 5 H           1442.
+## 6 I           1550.
+## 7 J           1781.
+## 8 K           2358.
+## 9 L           2368.</code></pre>
+<pre class="r"><code> lm(Price ~ Colour, data = DiamondRing)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Price ~ Colour, data = DiamondRing)
+## 
+## Coefficients:
+## (Intercept)      ColourE      ColourF      ColourG      ColourH      ColourI  
+##     2316.20      -764.29      -982.36      -147.73      -873.92      -765.88  
+##     ColourJ      ColourK      ColourL  
+##     -535.28        42.06        52.30</code></pre>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

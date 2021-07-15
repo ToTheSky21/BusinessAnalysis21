@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">4 min read</span>
+    <span class="article-duration">6 min read</span>
     
 
     <h1 class="article-title">Final Project</h1>
@@ -82,7 +82,7 @@
 </div>
 <div id="categorical-and-numerical-explanatory-variables-analysis" class="section level2">
 <h2>Categorical and numerical explanatory variables analysis:</h2>
-<p>For finding whether there is any relation between the dataset or not, I have done some basic analysis to find the dependent and independent variables.From these analysis, the variable Life Expectancy has came out as dependent variable(y) as it is effected by other predictive variables.</p>
+<p>For finding whether there is any relation between the dataset or not, I have done some basic analysis to find the dependent and independent variables.From these analysis, the variable, Life Expectancy has came out as dependent variable(y) as it is effected by other predictive variables.</p>
 </div>
 <div id="data-life-expectancy" class="section level2">
 <h2>Data: Life Expectancy</h2>
@@ -105,37 +105,59 @@
 </div>
 <div id="exploring-dataset" class="section level2">
 <h2>Exploring Dataset:</h2>
-<p>Now, I will conduct some primary data visualization to explore the dataset with scatter plot and bar diagram which are shown below.</p>
+<p>Now, I will conduct some primary data visualization to explore the dataset with histogram, density plot, scatter plot, box plot and bar diagram which are shown below.</p>
+</div>
+<div id="summary-of-life-expectancy-adult-mortality-and-hepatitis-b" class="section level2">
+<h2>Summary of Life expectancy, Adult Mortality and Hepatitis B:</h2>
+<p>The following visualizations are done to know the Summary of some of the variables at a glance which are known as univariate analysis.
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+The above distribution, it is clear that the modal Life expectancy count falls between 72 to 78 ages.Very few people exists with Life expectancy of age around 90.
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+Here, the summary of Adult Mortality Rates of both sexes (probability of dying between 15 and 60 years per 1000 population) is representing that the highest number lies around the number 25.This means the modal value is around 25 for Adult mortality.
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+Hepatitis B (HepB) implies the immunization coverage among 1-year-olds (%) in the dataset. In the graph it is observed that the highest values of coverage is around 100%.
+## GDP at a glance:
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+The distribution of GDP, Gross Domestic Product per capita (in USD), shows that most of the countries per caripa GDP is below 12,000 USD.
+## Bosxplot of Schooling by Percentage Expenditure:
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+The boxplot of total expenditure, General government expenditure on health as a percentage of total government, expenditure (%)</p>
 </div>
 <div id="gdp-by-population" class="section level2">
 <h2>GDP by POPULATION</h2>
-<p>The following basic scatter plot is done to understand the relation between Population and GDP. It shows countries with highest GDP has lower population.
-<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
-## Life Expectancy by Year:</p>
-<p>To know whether the Life Expectancy is changing by Year or not I have chosen one Country(Canada). Here, it shows
-that in the Year 2006 to 2008 it has changed and then resulted the same ages of life expectancy.
-<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
-## Hepatitis B by Alcohol:
-This plot shows how these Alcohol and Hepatitis B are related.This plot shows the percent of immunization for Hepatitis B are not positively related to Alcohol consumption,where Alcohol is recorded per capita (15+) consumption (in litres of pure alcohol) and Hepatitis B (HepB) as immunization coverage among 1-year-olds (%).
-<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
-## Adult Mortality by Alcohol:
-Here the variable Adult Mortality Rates are calculated for both sexes (probability of dying between 15 and 60 years per 1000 population). The more Alcohol consumption is not indicating higher Adult Mortality rate.
-<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-6-1.png" width="672" />
-## Adding Linear Regression lines to the plotted variables
-Before fitting the Linear Regression model with one independent variable,I have visualized the relationship between some independent variables with the dependent variable,Life expectancy.</p>
+<p><img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+The following basic scatter plot is done to understand the relation between Population and GDP. It shows countries with highest GDP has lower population.</p>
+</div>
+<div id="life-expectancy-by-year" class="section level2">
+<h2>Life Expectancy by Year:</h2>
+<p><img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+To know whether the Life Expectancy is changing by Year or not I have chosen one Country(Canada). Here, the above bar diagram shows that in the Year 2006 to 2008 it has changed and then resulted the same ages of life expectancy.</p>
+</div>
+<div id="hepatitis-b-by-alcohol" class="section level1">
+<h1>Hepatitis B by Alcohol:</h1>
+<p><img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+This plot shows how these Alcohol and Hepatitis B are related.This plot shows the percent of immunization for Hepatitis B are not positively related to Alcohol consumption,where Alcohol is recorded per capita (15+) consumption (in litres of pure alcohol) and Hepatitis B (HepB) as immunization coverage among 1-year-olds (%).</p>
+<div id="adult-mortality-by-alcohol" class="section level2">
+<h2>Adult Mortality by Alcohol:</h2>
+<p><img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+Here the variable Adult Mortality Rates are calculated for both sexes (probability of dying between 15 and 60 years per 1000 population). The more Alcohol consumption is not indicating higher Adult Mortality rate.</p>
+</div>
+<div id="adding-linear-regression-lines-to-the-plotted-variables" class="section level2">
+<h2>Adding Linear Regression lines to the plotted variables</h2>
+<p>Before fitting the Linear Regression model with one independent variable,I have visualized the relationship between some independent variables with the dependent variable,Life expectancy.</p>
 <p>##Life expectancy by GDP:
-<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-12-1.png" width="672" />
 ## Life expectancy by Adult Mortality:
-<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 ## Life expectancy by Percentage Expenditure:
-<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 ## Life Expectancy by Income composition of resources:
-<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-15-1.png" width="672" />
 ## Life Expectancy by Schooling:
-<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+<img src="/2021/06/21/final-project/index_files/figure-html/unnamed-chunk-16-1.png" width="672" />
 ## Fitting and Interpretting Linear Regression Model:</p>
 <p>In this data set there are several independent variables, but for fitting Linear Regression model I have chosen one predictor, namely Schooling for further steps.Now, the goal is to predict Life Expectancy(in age) from Schooling, number of years of Schooling(years).</p>
-<p>The function is: Life Expectancy = a + b*Schooling where, “a” and “b” are the intercept and the slope respectively.</p>
+<p>The function is: Life Expectancy = β0 + β1 * Schooling where, “β0” and “β1” are the intercept and the slope respectively.</p>
 </div>
 <div id="step-1-specify-model" class="section level2">
 <h2>Step 1: Specify model</h2>
@@ -151,6 +173,27 @@ Before fitting the Linear Regression model with one independent variable,I have 
 </div>
 <div id="step-3-fit-model-estimate-parameters" class="section level2">
 <h2>Step 3: Fit model &amp; estimate parameters</h2>
+<pre><code>## parsnip model object
+## 
+## Fit time:  2ms 
+## 
+## Call:
+## stats::lm(formula = le$`Life expectancy` ~ Schooling, data = data)
+## 
+## Coefficients:
+## (Intercept)    Schooling  
+##      44.109        2.103</code></pre>
+</div>
+<div id="closer-look-of-the-above-output" class="section level2">
+<h2>Closer look of the above output</h2>
+<pre><code>## # A tibble: 2 x 5
+##   term        estimate std.error statistic p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)    44.1     0.437      101.        0
+## 2 Schooling       2.10    0.0351      60.0       0</code></pre>
+<p>.large[
+<span class="math display">\[\widehat{le$`Life expectancy`} = 44.109 + 2.103 \times Schooling\]</span>]
+## Step 4: Tidy look of model &amp; parameters</p>
 <pre class="r"><code>linear_reg() %&gt;%
   set_engine(&quot;lm&quot;) %&gt;%
   fit(le$`Life expectancy` ~ Schooling, data = le) %&gt;%
@@ -160,12 +203,18 @@ Before fitting the Linear Regression model with one independent variable,I have 
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
 ## 1 (Intercept)    44.1     0.437      101.        0
 ## 2 Schooling       2.10    0.0351      60.0       0</code></pre>
+<p>.large[
+<span class="math display">\[\widehat{Life} {expectancy} = 44.108 + 2.103 \times {Schooling}\]</span>]</p>
 </div>
 <div id="interpretation-of-model-coefficients" class="section level2">
 <h2>Interpretation of model coefficients:</h2>
-<p>The values of the intercept (“a” value) and the slope (“b” value) for the Schooling. These “a” and “b” values plot a line between all the points of the data. So in this case, if there is a person who goes to school for 12 years,when a is 44.11 and b is 2.103, the model predicts (on average) that Life Expectancy in age is around 44.11 + (2.103 * 12) = 69.346 age.</p>
+<p>The values of the intercept (“β0” value) and the slope (“β1” value) for the Schooling. These “β0” and “β1” values plot a line between all the points of the data. So in this case, if there is a person who goes to school for 12 years,when β0 is 44.11 and β1 is 2.103, the model predicts (on average) that Life Expectancy in age is around 44.11 + (2.103 * 12) = 69.346 age.</p>
 <p>In another words,Slope means for each additional year a person’s Life expectancy is increased, the Schooling year is also expected to be longer, on average, by 2.10 years.</p>
 <p>And the intercept means a person who have 0 years school are expected to be 44.11 ages of Life Expectancy , on average.</p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary:</h2>
+</div>
 </div>
 
     </div>

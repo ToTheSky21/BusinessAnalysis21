@@ -1,0 +1,300 @@
+---
+title: Regression Models
+author: R package build
+date: '2021-07-09'
+slug: regression-models
+categories:
+  - ggplot2
+  - Tidyverse
+tags: []
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="dataset-at-a-glance" class="section level2">
+<h2>Dataset at a glance:</h2>
+<p>A Professor of machine learning, when planned to buy diamond ring for engagement, came to know that the pricing diamonds is not so easy.As a consequence of that, he collects data from three different wholesalers on 440 different diamonds. Now he has information on prices of these diamonds along with their characteristic features such as color, clarity, cut and carat (famous 4Cs) besides polish, symmetry and certification. These important features of Diamond are the independent variables in this data set to determine the price, which is a response or dependent variable. Some rows of the data set is printed below:</p>
+<pre><code>## # A tibble: 6 x 9
+##   Carat Colour Clarity Cut   Certification Polish Symmetry Price Wholesaler
+##   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;      &lt;dbl&gt;
+## 1  0.92 I      SI2     G     AGS           V      V         3000          1
+## 2  0.92 I      SI2     V     AGS           G      G         3000          1
+## 3  0.82 F      SI2     I     GIA           X      X         3004          1
+## 4  0.81 G      SI1     I     GIA           X      V         3004          1
+## 5  0.9  J      VS2     V     GIA           V      V         3006          1
+## 6  0.87 F      SI2     I     AGS           G      V         3007          1</code></pre>
+</div>
+<div id="data-analysis" class="section level2">
+<h2>Data Analysis:</h2>
+<p>To determine which feature or variable is most important and how they are related to the diamond pricing, data analysis is performed here. The professor has identified a diamond which interests him. Now to ensure that the price he pays for the diamond is worthy or not a regression model is built here following some preliminary data analysis.
+For this exploratory data analysis, the Univariate Analysis is performed here first with relevant variables and then Bivariate Analysis is made as described below:</p>
+</div>
+<div id="univariate-analysis-of-metric-and-non-metric-data" class="section level2">
+<h2>Univariate Analysis of Metric and Non-Metric Data:</h2>
+<p>In the Professor’s Diamond Ring data set the variables Price, Carat, Clarity are Metric data, where as the variables Color, Cut, Certification, Polish, Symmetry are Non-Metric Data. Now, lets have a look at some of the the summary statistics and distributions of metric variables: Price, Carat and Clarity first.</p>
+</div>
+<div id="price" class="section level2">
+<h2>Price</h2>
+<pre><code>## # A tibble: 1 x 4
+##   average_price median_price var_price sd_price
+##           &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1         1717.         2169  1382245.    1176.</code></pre>
+<p>From the above summary statistics of price we observe that mean and median are different, where the mean, 7.17 is lower than the median, 2169. So, we can assume that the median is the better estimate.The visualization of price variables will give more clear idea about the best measure.</p>
+<pre><code>##     0%    25%    50%    75%   100% 
+##  160.0  520.0 2169.0 3012.5 3145.0</code></pre>
+<p>Here, we find that the minimum price is $160 and the maximum is $3145, where the 50th quantile representing median as shown above.
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+In the above Boxplot of price, the median value($2169) has more variability to min value than max value.</p>
+<pre><code>## # A tibble: 1 x 1
+##   IQR_price
+##       &lt;dbl&gt;
+## 1     2492.</code></pre>
+<p>The IQR or interquartile range measures the difference between Q3 and Q1, which is 2492.5 here.</p>
+<pre><code>##      25% 
+## -3218.75</code></pre>
+<pre><code>##     75% 
+## 6751.25</code></pre>
+<pre><code>## # A tibble: 0 x 1
+## # … with 1 variable: Price &lt;dbl&gt;</code></pre>
+<p>Here it is shown that there is no outlier. To find whether there is any outliers in the price variable, upper and lower interval is defined measuring the threshold as: Price &lt; Q1 − 1.5 × IQR or Price &gt; Q3 + 1.5 × IQR.
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+The above distribution of price shows that the data are lying between two groups, 0 to $1000 and $1500 to $3500.There is no diamond with price ranges between $1000 to $1500.</p>
+</div>
+<div id="carat" class="section level2">
+<h2>Carat</h2>
+<pre><code>## # A tibble: 1 x 4
+##   average_carat median_carat var_carat sd_carat
+##           &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1         0.669         0.81     0.144    0.380</code></pre>
+<p>In case of Carat, the mean value is also less than the median from which we can assume the data is left-skewed.</p>
+<pre><code>##   0%  25%  50%  75% 100% 
+## 0.09 0.30 0.81 1.01 1.58</code></pre>
+<p>The minimum value for Carat is 0.09, maximum value is 1.58 and the second quartile is 0.81, which is the median.</p>
+<pre><code>## # A tibble: 1 x 1
+##   IQR_carat
+##       &lt;dbl&gt;
+## 1      0.71</code></pre>
+<p>For variable Carat, the interquartile range or the difference between Q3 and Q1 is 0.71.</p>
+<pre><code>## # A tibble: 1 x 2
+##   lower_threshold upper_threshold
+##             &lt;dbl&gt;           &lt;dbl&gt;
+## 1          -0.765            2.08</code></pre>
+<pre><code>## # A tibble: 0 x 1
+## # … with 1 variable: Carat &lt;dbl&gt;</code></pre>
+<p>There is no substantial difference from one data point to others is case of the feature Carat of diamond.
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+This distribution shows almost same pattern as price.The diamonds appear to be in two groups 0.0 to 0.30 and 0.81
+to 1.58 carats. Here,the median value, 0.81 is the better estimate than the average value,0.67.</p>
+</div>
+<div id="clarity" class="section level2">
+<h2>Clarity</h2>
+<pre><code>## # A tibble: 9 x 2
+##   Clarity     n
+##   &lt;chr&gt;   &lt;int&gt;
+## 1 SI1       116
+## 2 SI2       110
+## 3 I1         82
+## 4 VS2        41
+## 5 VS1        30
+## 6 I2         28
+## 7 SI3        26
+## 8 VVS2        5
+## 9 VVS1        2</code></pre>
+</div>
+<div id="univariate-analysis-with-non-metric-data" class="section level2">
+<h2>Univariate analysis with non-metric data:</h2>
+<p>For non-metric data, some basic summary statistics and visualization are performed below:
+# Color
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-14-1.png" width="672" />
+The Colours “I” has the highest frequency of 79 and the Colors “L” has lowest frequency of 12.
+# Cut
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-15-1.png" width="672" />
+In above distribution, diamond Cut has the highest frequency for the class Excellent(X) and lowest for Good(G).
+# Certification
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-16-1.png" width="672" />
+The summary of diamond certification shows that EGL and GIA are used most frequently.
+# Polish
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+The very good (V) polish for diamond is most popular where Ideal and Fair are least frequenty used.
+# Symmetry
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+The diamonds with Good(G) and Very good(V) symmetry has more frequency than those of Fair, excellent and Ideal symmetry.
+## Bivariate Analysis:
+For Bivariate Analysis, here metric data are used first as follows:
+# Price Vs Carat
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+From the above scatter plot it is clear that the price and carat pf diamonds data are separated by two distinct groups with low carat,
+0.09 to 0.30 diamonds having low prices and higher carat diamonds lies between higher price ranges.
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<pre><code>## 
+## Call:
+## lm(formula = Price ~ Carat, data = DiamondRing)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1705.8  -165.9  -111.9   135.2   994.7 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  -200.48      43.11   -4.65  4.4e-06 ***
+## Carat        2864.73      56.04   51.12  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 446 on 438 degrees of freedom
+## Multiple R-squared:  0.8564, Adjusted R-squared:  0.8561 
+## F-statistic:  2613 on 1 and 438 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>The linear regression coefficient with negative value is surprising with negative residuals. Here, the R square value is 0.86 which indicates that at least some variability in the data, that cannot be accounted for by the model.This is not perfectly linear regression model.
+# Price and Clarity
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<pre><code>## 
+## Call:
+## lm(formula = Price ~ Clarity, data = DiamondRing)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2171.2  -571.6  -290.3   582.1  2204.8 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  2543.15     107.95  23.558  &lt; 2e-16 ***
+## ClarityI2    -201.22     213.97  -0.940  0.34754    
+## ClaritySI1  -1495.53     141.04 -10.604  &lt; 2e-16 ***
+## ClaritySI2   -568.95     142.62  -3.989 7.79e-05 ***
+## ClaritySI3     76.24     220.02   0.347  0.72913    
+## ClarityVS1  -1405.38     208.58  -6.738 5.17e-11 ***
+## ClarityVS2  -1654.95     186.98  -8.851  &lt; 2e-16 ***
+## ClarityVVS1 -1996.15     699.61  -2.853  0.00454 ** 
+## ClarityVVS2 -1978.95     450.31  -4.395 1.40e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 977.6 on 431 degrees of freedom
+## Multiple R-squared:  0.3213, Adjusted R-squared:  0.3087 
+## F-statistic:  25.5 on 8 and 431 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>In case of Price and Clarity of Diamonds, the R square value is only 0.31 which means there is variability between these two features of Diamond.
+# Price and Cut
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<pre><code>## 
+## Call:
+## lm(formula = Price ~ Cut, data = DiamondRing)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1987.22 -1111.01   -83.62  1034.23  1912.90 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   2455.2      145.1  16.916  &lt; 2e-16 ***
+## CutG          -409.2      215.5  -1.899 0.058218 .  
+## CutI          -723.5      188.5  -3.839 0.000142 ***
+## CutV         -1277.1      184.1  -6.939 1.44e-11 ***
+## CutX          -797.2      171.5  -4.649 4.43e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1115 on 435 degrees of freedom
+## Multiple R-squared:  0.109,  Adjusted R-squared:  0.1008 
+## F-statistic: 13.31 on 4 and 435 DF,  p-value: 3.072e-10</code></pre>
+<p>In the above regression using Cut with the dependent variable, Price, the R square value is .10 which means the regression is linear and Cut is an important feature to determine the price of Diamonds.
+# Price and Symmetry
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<pre><code>## 
+## Call:
+## lm(formula = Price ~ Symmetry, data = DiamondRing)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1734.4  -945.8   115.6  1171.6  1679.5 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   2432.3      249.6   9.744  &lt; 2e-16 ***
+## SymmetryG     -537.9      265.8  -2.024 0.043613 *  
+## SymmetryI      615.1      569.2   1.081 0.280440    
+## SymmetryV     -966.8      262.0  -3.690 0.000253 ***
+## SymmetryX     -673.0      296.6  -2.269 0.023754 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1144 on 435 degrees of freedom
+## Multiple R-squared:  0.06206,    Adjusted R-squared:  0.05343 
+## F-statistic: 7.195 on 4 and 435 DF,  p-value: 1.288e-05</code></pre>
+<p>From the relation between Price and Symmetry of Diamonds, it is observed that the R square value is only 0.05 which means there is no significant relation between
+these two features of Diamond.
+## Multiple Regression Model</p>
+<pre><code>## 
+## Call:
+## lm(formula = Price ~ Carat + Colour + Cut + Clarity + Certification + 
+##     Polish, data = DiamondRing)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -773.18  -81.53  -19.89  104.73  700.83 
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)      -1418.44     146.05  -9.712  &lt; 2e-16 ***
+## Carat             4195.83      50.33  83.366  &lt; 2e-16 ***
+## ColourE           -197.12      53.22  -3.704 0.000241 ***
+## ColourF           -319.02      53.34  -5.981 4.85e-09 ***
+## ColourG           -304.31      54.17  -5.618 3.58e-08 ***
+## ColourH           -444.26      52.47  -8.467 4.56e-16 ***
+## ColourI           -512.36      52.28  -9.800  &lt; 2e-16 ***
+## ColourJ           -647.36      54.10 -11.965  &lt; 2e-16 ***
+## ColourK           -994.64      60.43 -16.460  &lt; 2e-16 ***
+## ColourL          -1175.07      75.95 -15.472  &lt; 2e-16 ***
+## CutG                74.43      40.93   1.818 0.069724 .  
+## CutI               112.69      39.29   2.868 0.004346 ** 
+## CutV               103.71      40.19   2.581 0.010210 *  
+## CutX                76.24      34.20   2.229 0.026342 *  
+## ClarityI2         -773.86      50.61 -15.291  &lt; 2e-16 ***
+## ClaritySI1         865.55      42.68  20.282  &lt; 2e-16 ***
+## ClaritySI2         734.88      35.29  20.825  &lt; 2e-16 ***
+## ClaritySI3         394.97      49.15   8.036 1.00e-14 ***
+## ClarityVS1        1032.26      58.56  17.628  &lt; 2e-16 ***
+## ClarityVS2         922.81      52.70  17.512  &lt; 2e-16 ***
+## ClarityVVS1       1348.14     154.67   8.716  &lt; 2e-16 ***
+## ClarityVVS2        918.32      99.66   9.215  &lt; 2e-16 ***
+## CertificationDOW  -586.75     219.40  -2.674 0.007787 ** 
+## CertificationEGL  -422.09      81.96  -5.150 4.06e-07 ***
+## CertificationGIA   -72.69      80.53  -0.903 0.367251    
+## CertificationIGI   -17.75      91.60  -0.194 0.846421    
+## PolishG            303.22      95.42   3.178 0.001597 ** 
+## PolishI            442.67     155.98   2.838 0.004765 ** 
+## Polishv            380.01     222.71   1.706 0.088711 .  
+## PolishV            328.88      97.75   3.365 0.000839 ***
+## PolishX            335.91     101.14   3.321 0.000977 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 197.4 on 409 degrees of freedom
+## Multiple R-squared:  0.9737, Adjusted R-squared:  0.9718 
+## F-statistic: 505.2 on 30 and 409 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>The overall R square of the multiple linear regression is 0.97 here, which shows a good fit of the model.The P-value &lt; 2e-16 is indicating highly significant result,
+that means, Carat, some colors (I, J ,K, L) with Clarity except SI3 are significantly related to the outcome variable, Price (based on regression coefficients).Carat, Clarity Color, Cut, Polish and Certification are the main features of price consecutively where as Symmetry has variability with diamond price.
+## Relation of the response with non-metric
+# Price count by Colour
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-25-1.png" width="672" />
+The price of “J” colored diamond has the highest value count where the colour “L” has the significantly lower count with higher prices.In case of colour “H” and “I” the diamond with the lower prices hashighest frequency.
+## # Price by Colour
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-26-1.png" width="672" />
+The boxplot shows that “Fair” cut diamonds has the highest median value. The only outliers are visible in case of fair cut with lower priced diamonds.
+# Price by Clarity
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-27-1.png" width="672" />
+The boxplot of Price and Clarity sows that there are outliers in I1,I2, SI1 and VS2 types of Diamond. The median of clarity SI2 has the highest value.
+## Relation between two non-metric:
+# Colour and Cut
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-28-1.png" width="672" />
+This heatmap shows that how the Color and Cut are correlated. For the excellent Cut almost all colored diamonds has the highest count, most of the excellent cut has the color “H” and “J”.For color “D”, every Cut has lower count.<br />
+## Polish and Symmetry
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-29-1.png" width="672" />
+The above plot shows that, the size of each circle in the plot displays how many observations occurred at each combination of values. “Very good” polish and “Very good” symmetry has highest observations (125).
+## Summary of Findings
+* The price is the dependent or response variable and the significant determinants are Carat, Clarity and Color.
+* The features Cut, Certification and Polish also has some relation with followed by the above main determinants.
+* From the regression model estimates, it is also observed that Symmetry of Diamond has no relation with its Price.
+* Professor need to determine the price of diamond ring depending on the features of Carat, Clarity and Color.
+The predicted price rage is around $3000 to get more than 1 Carat with featured Color and Clarity.</p>
+</div>

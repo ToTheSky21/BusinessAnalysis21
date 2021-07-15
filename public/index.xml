@@ -6,7 +6,16 @@
     <description>Recent content on Tarana-Fundamentals of Data Analystics</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 21 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 09 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Regression Models</title>
+      <link>/2021/07/09/regression-models/</link>
+      <pubDate>Fri, 09 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/07/09/regression-models/</guid>
+      <description>Dataset at a glance: library(tidyverse) ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ── ## ✓ ggplot2 3.3.4 ✓ purrr 0.3.4 ## ✓ tibble 3.1.2 ✓ dplyr 1.0.7 ## ✓ tidyr 1.1.3 ✓ stringr 1.4.0 ## ✓ readr 1.4.0 ✓ forcats 0.5.1 ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ── ## x dplyr::filter() masks stats::filter() ## x dplyr::lag() masks stats::lag() library(readxl) DiamondRing &amp;lt;- read_xlsx(&amp;quot;Professor_Proposes_Data.xlsx&amp;quot;) head(DiamondRing) ## # A tibble: 6 x 9 ## Carat Colour Clarity Cut Certification Polish Symmetry Price Wholesaler ## &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; ## 1 0.</description>
+    </item>
+    
     <item>
       <title>Final Project</title>
       <link>/2021/06/21/final-project/</link>
@@ -14,7 +23,7 @@
       
       <guid>/2021/06/21/final-project/</guid>
       <description>Data Analysis to fit Linear Regression Model: This is an exploratory data analysis report to fit the simple Linear Regression Model. This report concerns a dataset about Life Expectancy.
- Categorical and numerical explanatory variables analysis: For finding whether there is any relation between the dataset or not, I have done some basic analysis to find the dependent and independent variables.From these analysis, the variable Life Expectancy has came out as dependent variable(y) as it is effected by other predictive variables.</description>
+ Categorical and numerical explanatory variables analysis: For finding whether there is any relation between the dataset or not, I have done some basic analysis to find the dependent and independent variables.From these analysis, the variable, Life Expectancy has came out as dependent variable(y) as it is effected by other predictive variables.</description>
     </item>
     
     <item>
