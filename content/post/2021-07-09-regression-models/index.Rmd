@@ -126,6 +126,7 @@ library(ggplot2)
   geom_bar(fill="lightgreen")
 ```
 In above distribution, diamond Cut has the highest frequency for the class Excellent(X) and lowest for Good(G).
+
 # Certification 
 ```{r warning= FALSE, echo= FALSE, message=FALSE}
 library(ggplot2)
@@ -134,6 +135,7 @@ library(ggplot2)
   geom_bar(fill="skyblue")
 ```
 The summary of diamond certification shows that EGL and GIA are used most frequently.
+
 # Polish 
 ```{r warning= FALSE, echo= FALSE, message=FALSE}
 library(ggplot2)
@@ -141,7 +143,8 @@ library(ggplot2)
   ggplot(data.frame(polish), mapping=aes(x=polish)) +
   geom_bar(fill="lightgreen")
 ```
-The very good (V) polish for diamond is most popular where Ideal and Fair are least frequenty used.
+The very good (V) polish for diamond is most popular where Ideal and Fair are least frequently used.
+
 # Symmetry
 ```{r warning= FALSE, echo= FALSE, message=FALSE}
 library(ggplot2)
@@ -150,16 +153,17 @@ library(ggplot2)
   geom_bar(fill="skyblue")
 ```
 The diamonds with Good(G) and Very good(V) symmetry has more frequency than those of Fair, excellent and Ideal symmetry.
+
 ## Bivariate Analysis:
 For Bivariate Analysis, here metric data are used first as follows:
+
 # Price Vs Carat
 ```{r warning= FALSE, echo= FALSE, message=FALSE}
 ggplot(DiamondRing, mapping=aes(Price, Carat)) +
  geom_point() + labs(title = "Price Vs Carat of Diamonds")
  #geom_smooth(method = "lm", se = FALSE)
 ```
-From the above scatter plot it is clear that the price and carat pf diamonds data are separated by two distinct groups with low carat,
-0.09 to 0.30 diamonds having low prices and higher carat diamonds lies between higher price ranges.
+From the above scatter plot it is clear that the price and carat pf diamonds data are separated by two distinct groups with low carat, 0.09 to 0.30 diamonds having low prices and higher carat diamonds lies between higher price ranges.
 ```{r warning= FALSE, echo= FALSE, message=FALSE}
 ggplot(DiamondRing, mapping=aes(Price, Carat)) +
  geom_point() + labs(title = "Linear Regression between Price and Carat of Diamonds") +
@@ -168,6 +172,7 @@ ggplot(DiamondRing, mapping=aes(Price, Carat)) +
 summary(reg_price_carat)
 ```
 The linear regression coefficient with negative value is surprising with negative residuals. Here, the R square value is 0.86 which indicates that at least some variability in the data, that cannot be accounted for by the model.This is not perfectly linear regression model.
+
 # Price and Clarity
 ```{r warning= FALSE, echo= FALSE, message=FALSE}
 ggplot(DiamondRing, mapping=aes(Price, Clarity)) +
@@ -177,6 +182,7 @@ ggplot(DiamondRing, mapping=aes(Price, Clarity)) +
 summary(reg_price_clarity)
 ```
 In case of Price and Clarity of Diamonds, the R square value is only 0.31 which means there is variability between these two features of Diamond.
+
 # Price and Cut
 ```{r warning= FALSE, echo= FALSE, message=FALSE}
 ggplot(DiamondRing, mapping=aes(Price, Cut)) +
@@ -186,6 +192,7 @@ ggplot(DiamondRing, mapping=aes(Price, Cut)) +
 summary(reg_price_cut)
 ```
 In the above regression using Cut with the dependent variable, Price, the R square value is .10 which means the regression is linear and Cut is an important feature to determine the price of Diamonds.
+
 # Price and Symmetry
 ```{r warning= FALSE, echo= FALSE, message=FALSE}
 ggplot(DiamondRing, mapping=aes(Price, Symmetry)) +
@@ -196,6 +203,7 @@ summary(reg_price_symmetry)
 ```
 From the relation between Price and Symmetry of Diamonds, it is observed that the R square value is only 0.05 which means there is no significant relation between 
 these two features of Diamond.
+
 ## Multiple Regression Model
 ```{r warning= FALSE, echo= FALSE, message=FALSE}
 m_reg <- lm(Price ~ Carat + Colour + Cut + Clarity + Certification  + Polish, data = DiamondRing)
@@ -204,27 +212,31 @@ summary(m_reg)
 
 The overall R square of the multiple linear regression is 0.97 here, which shows a good fit of the model.The P-value < 2e-16 is indicating highly significant result,
 that means, Carat, some colors (I, J ,K, L) with Clarity except SI3 are significantly related to the outcome variable, Price (based on regression coefficients).Carat, Clarity Color, Cut, Polish and Certification are the main features of price consecutively where as Symmetry has variability with diamond price.
-## Relation of the response with non-metric
-# Price count by Colour
+
+## Relation of the response variable with non-metric
+## Price count by Colour
 ```{r warning= FALSE, echo= FALSE, message=FALSE}
 DiamondRing %>%
   ggplot(DiamondRing, mapping=aes(x=Price)) +
   geom_histogram(bins = 7) +
   facet_wrap(vars(DiamondRing$Colour))
 ```
-The price of "J" colored diamond has the highest value count where the colour "L" has the significantly lower count with higher prices.In case of colour "H" and "I" the  diamond with the lower prices hashighest frequency.
-## # Price by Colour
+The price of "J" colored diamond has the highest value count where the color "L" has the significantly lower count with higher prices.In case of color "H" and "I" the  diamond with the lower prices has the highest frequency.
+
+## Price by Colour
 ```{r warning= FALSE, echo= FALSE, message=FALSE}
 ggplot(data = DiamondRing, mapping = aes(x = Cut, y = Price)) +
   geom_boxplot()
 ```
 The boxplot shows that "Fair" cut diamonds has the highest median value. The only outliers are visible in case of fair cut with lower priced diamonds.
+
 # Price by Clarity
 ```{r warning= FALSE, echo= FALSE, message=FALSE}
 ggplot(data = DiamondRing, mapping = aes(x = Clarity, y = Price)) +
   geom_boxplot()
 ```
 The boxplot of Price and Clarity sows that there are outliers in I1,I2, SI1 and VS2 types of Diamond. The median of clarity SI2 has the highest value.
+
 ## Relation between two non-metric:
 # Colour and Cut
 ```{r warning= FALSE, echo= FALSE, message=FALSE}
@@ -234,15 +246,20 @@ DiamondRing %>%
     geom_tile(mapping = aes(fill = n))
 ```
 This heatmap shows that how the Color and Cut are correlated. For the excellent Cut almost all colored diamonds has the highest count, most of the excellent cut has the color "H" and "J".For color "D", every Cut has lower count.  
+
 ## Polish and Symmetry
 ```{r warning= FALSE, echo= FALSE, message=FALSE}
 ggplot(data = DiamondRing) +
   geom_count(mapping = aes(x = polish, y = symmetry))
 ```
 The above plot shows that, the size of each circle in the plot displays how many observations occurred at each combination of values. "Very good" polish and  "Very good" symmetry has highest observations (125).
+
 ## Summary of Findings
 * The price is the dependent or response variable and the significant determinants are Carat, Clarity and Color. 
+
 * The features Cut, Certification and Polish also has some relation with followed by the above main determinants.
+
 * From the regression model estimates, it is also observed that Symmetry of Diamond has no relation with its Price.
+
 * Professor need to determine the price of diamond ring depending on the features of Carat, Clarity and Color. 
   The predicted price rage is around $3000 to get more than 1 Carat with featured Color and  Clarity. 
