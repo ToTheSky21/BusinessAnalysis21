@@ -1,0 +1,190 @@
+---
+title: 'Resampling method : Cross Validation & Bootstrap'
+author: R package build
+date: '2021-07-29'
+slug: resampling-method-cross-validation-bootstrap
+categories:
+  - tidymodels
+  - Basics
+  - ggplot2
+tags: []
+---
+To explore the resampling techniques here the professors diamond ring data and bank data are used consecutively,in order to estimate the test error rates that result from fitting linear and logistic models on these two data sets. 
+```{r warning= FALSE, echo= FALSE, message=FALSE} 
+library(tidyverse)
+library(readxl)
+library(ggplot2)
+library(base)
+library(graphics)
+library(tidymodels)
+DiamondRing <- read_xlsx("Professor_Proposes_Data.xlsx")
+head(DiamondRing)
+```
+## For Linear Regression model
+
+To measure the accuracy of linear model with Diamond ring data by Cross Validation and bootstrap method, here, the simple linear model of Price and Carat is used below. 
+
+## Cross Validation method
+
+For cross validation method lets revisit the relation between the Price and Carat variable by a simple plot from previous excercise.
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+require(ISLR)
+require(boot)
+plot(Price ~ Carat, data = DiamondRing)
+```
+Here, the cv.glm function, which is a part of the boot library, results two numbers in the delta vector. In this case the numbers are identical. Below, we discuss a situation in which the two numbers differ. Our cross-validation estimate for the test error is approximately 199763.
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+glm.fit = glm(Price ~ Carat, data = DiamondRing)
+cv.glm(DiamondRing, glm.fit) $delta
+```
+Now the cross validation function is used to implement k-fold CV. Below k = 10 is used on the Diamond Ring data set.In this data set, the two estimates are very similar to each other, as we see in the graph below.
+
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+loocv = function(fit){
+  h=lm.influence(fit)$h
+  mean( (residuals(fit) / (1-h)) ^ 2)
+}
+loocv(glm.fit)
+cv.error=rep(0,5)
+degree = 1:5
+
+for(d in degree){
+ glm.fit=glm(Price ~ poly(Carat, d), data = DiamondRing)
+ cv.error[d]=loocv(glm.fit)
+}
+plot(degree, cv.error, type="b")
+#10-folds cv
+ cv.error10=rep(0,5)
+ 
+for(d in degree){
+    glm.fit=glm(Price ~ poly(Carat, d), data = DiamondRing)
+    cv.error10[d]=cv.glm(DiamondRing, glm.fit, K=10)$delta[1] 
+ }
+#plot.new()%>%
+lines(degree, cv.error10, type="b", col="red")
+```
+## Bootstrap methods
+
+For performing a bootstrap analysis, first, a function is created, where linear regression is calculated. Then using the boot function, to perform the bootstrap with 100 sampling observations is taken repeatedly from the data set with replacement.
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+# A function to estimate alpha
+alpha.fn = function(data, index) {
+    X = data$Carat[index]
+    Y = data$Price[index]
+    glm.fit = glm(Y ~ X, data = data)
+    return (coef(glm.fit))
+}
+set.seed(1)
+alpha.fn(DiamondRing, sample(100, 100, replace = T))
+
+```
+
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+boot(DiamondRing, alpha.fn, R = 1000)
+```
+Now to estimating the accuracy of a Linear Regression Model, the standard error is calculated that results, the bias (which is not an important measure in this case) and standard error of 23.76 and 52.11.
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+# boot.fn
+boot.fn = function(data, index) return(coef(lm(Price ~ Carat, data = data, 
+    subset = index)))
+boot(DiamondRing, boot.fn, 1000)
+```
+# Compare to the linear model 
+
+If we compare this result of Bootstrap Statistics with the regular model, we see that standard error, 43.11 and 56.04, were much higher in the previous model.The bootstrap approach is likely giving a more accurate estimate of the standard errors of ˆβ0 and ˆβ1 than is the summary function,that we observe comparing these two. 
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+summary(lm(Price ~ Carat, data = DiamondRing))
+```
+# 2nd order model
+
+Below the quadratic model to the Diamond ring data, with simple linear model of Price and Carat is fitted to compute the bootstrap standard error estimates and the standard linear regression estimates. Here we see the difference between the bootstrap estimates and the standard estimates of SE(ˆβ0), SE(ˆβ1) and SE(ˆβ2).
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+boot.fn = function(data, index) coefficients(lm(Price ~ Carat + I(Carat^2), 
+    data = data, subset = index))
+set.seed(1)
+boot(DiamondRing, boot.fn, 1000)
+```
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+summary (lm(Price ~ Carat +I(Carat ^2) ,data=DiamondRing))
+```
+
+## For Logistic Regression model
+
+Here, for the Logistic Regression model Bank data is used to measure the model accuracy by Cross Validation and bootstrap method. The model of the variable age, job, default, loan with the response variable is used in this case. 
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+library(openintro)
+bank <- read.table("bank.csv", sep=";", header=T)
+head(bank)
+```
+#Leave-One-Out Cross-Validation
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+bank <- read.table("bank.csv", sep=";", header=T)
+library(boot)
+library(ISLR)
+bank$y <- as.factor(bank$y)
+bank$job <- as.numeric(as.factor(bank$job))
+bank$default <- as.numeric(as.factor(bank$default))
+bank$loan <- as.numeric(as.factor(bank$loan))
+#head(bank)
+glm.fit = glm(y ~ age + job + default + loan, family = "binomial", data = bank)
+cv.err = cv.glm(bank, glm.fit)
+
+```
+Here, our cross-validation estimate for the test error is approximately 0.1012752 and the numbers are identical for both the error.
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+cv.err$delta
+```
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+cv.error = rep(0, 5)
+for (i in 1:5) {
+    glm.fit = glm(y ~ poly(age + job + default + loan, i), family = "binomial", data = bank)
+    cv.error[i] = cv.glm(bank, glm.fit)$delta[1]
+}
+cv.error
+```
+## k-Fold Cross-Validation
+
+In the k-fold Cross-Validation, the numbers associated with delta differ slightly. On this Bank data set, the estimates are very similar to each other, that we see below.
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+set.seed(17)
+cv.error.10 = rep(0, 10)
+for (i in 1:10) {
+    glm.fit = glm(y ~ poly(age + job + default + loan, i),family = "binomial", data = bank)
+    cv.error.10[i] = cv.glm(bank, glm.fit, K = 10)$delta[1]
+}
+cv.error.10
+```
+## bootstrap methods
+
+For performing a bootstrap analysis a function is created, where logistic regression is calculated here using the variable age, job, default and loan with response variable. Then using the boot function 100 sampling observations is taken repeatedly from the data set with replacement.
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+# A function to estimate alpha
+alpha.fn = function(data, index) {
+    X = data$age[index] + data$job[index] + data$default[index] + data$loan[index]
+    Y = data$y[index]
+    glm.fit = glm(Y ~ X, family = "binomial", data = data)
+    return (coef(glm.fit))
+}
+set.seed(1)
+alpha.fn(bank, sample(100, 100, replace = T))
+
+```
+
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+boot(bank, alpha.fn, R = 1000)
+```
+## Estimating the Accuracy of a Logistic Regression Model
+
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+# boot.fn
+boot.fn = function(data, index) return(coef(glm(y ~ age + job + default + loan, family = "binomial", data = data, 
+    subset = index)))
+boot(bank, boot.fn, 1000)
+```
+## Compare to the logistic model
+
+We see that, Bootstrap Statistics and the regular model coefficients results almost same standard error. This means, our model has significant accuracy. 
+```{r warning= FALSE, echo= FALSE, message=FALSE}
+summary(glm(y ~ age + job + default + loan, family = "binomial", data = bank))$coef
+```

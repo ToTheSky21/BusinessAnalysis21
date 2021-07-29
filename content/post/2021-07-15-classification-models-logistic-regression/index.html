@@ -1,0 +1,170 @@
+---
+title: 'Classification models : Logistic Regression'
+author: R package build
+date: '2021-07-15'
+slug: classification-models-logistic-regression
+categories:
+  - Tidyverse
+  - tidymodels
+  - ggplot2
+tags: []
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="summary-of-data" class="section level2">
+<h2>Summary of Data</h2>
+<p>The data is related with direct marketing campaigns of a Portuguese banking institution. The marketing campaigns were based on phone calls. To identify whether a customer would subscribe the bank term deposit or not, most of the time more than one contact to the same customer was required. Now,the information of a customers age, job, marital, education, default, balance, housing, loan, contact along side the data of day, month, duration, campaign, previous days, previous, previous outcome are available.
+These characteristics are considered important features in determining if the client will subscribe a term deposit or not, but it was not certain how important are each of these features really are.
+Here, classification model will build with logistics regression to predict if the client will subscribe a term deposit or not.</p>
+</div>
+<div id="data-analysis" class="section level2">
+<h2>Data Analysis</h2>
+<p>The exploratory data analysis involved univariate, bivariate analysis with some other relevant basic analysis to know the data set shortly. Here, the response variable is, y, whether the term deposit was made or not.Here, is the preview of data set.</p>
+<pre><code>##   age         job marital education default balance housing loan  contact day
+## 1  30  unemployed married   primary      no    1787      no   no cellular  19
+## 2  33    services married secondary      no    4789     yes  yes cellular  11
+## 3  35  management  single  tertiary      no    1350     yes   no cellular  16
+## 4  30  management married  tertiary      no    1476     yes  yes  unknown   3
+## 5  59 blue-collar married secondary      no       0     yes   no  unknown   5
+## 6  35  management  single  tertiary      no     747      no   no cellular  23
+##   month duration campaign pdays previous poutcome  y
+## 1   oct       79        1    -1        0  unknown no
+## 2   may      220        1   339        4  failure no
+## 3   apr      185        1   330        1  failure no
+## 4   jun      199        4    -1        0  unknown no
+## 5   may      226        1    -1        0  unknown no
+## 6   feb      141        2   176        3  failure no</code></pre>
+<pre class="r"><code>table(bank$y)</code></pre>
+<pre><code>## 
+##   no  yes 
+## 4000  521</code></pre>
+<pre class="r"><code>prop.table(table(bank$y))</code></pre>
+<pre><code>## 
+##      no     yes 
+## 0.88476 0.11524</code></pre>
+<p>Here, we see that only 521 customer was subscribed for the term deposit and 4000 customer was not subscribed where as the proportion is 0.115 and 0.885 respectively.</p>
+<pre class="r"><code>#bank$y &lt;- as.factor(bank$y)
+bank$y &lt;- ifelse(bank$y == &quot;yes&quot;, 1, 0)
+bank$y &lt;- factor(bank$y, levels = c(0, 1))</code></pre>
+</div>
+<div id="term-deposit-and-customers-age" class="section level2">
+<h2>Term deposit and Customers Age</h2>
+<pre class="r"><code>bank %&gt;%
+  ggplot(aes(x = age, fill = y)) +
+  geom_bar(position = &quot;fill&quot;) +
+  labs(
+    x = &#39;Age of a customer&#39;, 
+    fill = &quot;Term deposit&quot;, 
+    y = NULL,
+    title = &#39;Term deposit vs. Customers Age&#39;
+    ) +
+  scale_fill_manual(values = c(&quot;#DEB4A0&quot;, &quot;#CA235F&quot;)) +
+  theme(axis.text.x = element_text(angle = 90)) </code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+Is is observed that, most of the customer subscribed with term deposit was with higher aged.
+## Term deposit and Marital status</p>
+<pre class="r"><code>bank %&gt;%
+  ggplot(aes(x = marital, fill = y)) +
+  geom_bar(position = &quot;fill&quot;) +
+  labs(
+    x = &#39;Whether a customer is Divorced, Married or Single&#39;, 
+    fill = &quot;Term deposit&quot;, 
+    y = NULL,
+    title = &#39;Term deposit vs. Marital status&#39;
+    ) +
+  scale_fill_manual(values = c(&quot;#DEB4A0&quot;, &quot;#CA235F&quot;))</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+It is seen here that, the Marital status did not effect significantly on subscribing term loan, still the customer with status Divorced and Single subscribed more than Married customers.
+## Term deposit and Job</p>
+<pre class="r"><code>bank %&gt;%
+  ggplot(aes(x = job, fill = y)) +
+  geom_bar(position = &quot;fill&quot;) +
+  labs(
+    x = &#39;Job&#39;, 
+    fill = &quot;Term deposit&quot;, 
+    y = NULL,
+    title = &#39;Term deposit vs. Job&#39;
+    ) +
+  scale_fill_manual(values = c(&quot;#DEB4A0&quot;, &quot;#CA235F&quot;)) +
+  theme(axis.text.x = element_text(angle = 90)) </code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>#bank$age &lt;- as.factor(bank$age)
+#bank$y &lt;- as.factor(bank$y)
+bank_fit &lt;- logistic_reg() %&gt;%
+  set_engine(&quot;glm&quot;) %&gt;%
+  fit(y ~ job + age + job + loan + default , data = bank, family = &quot;binomial&quot;)
+tidy(bank_fit)</code></pre>
+<pre><code>## # A tibble: 15 x 5
+##    term             estimate std.error statistic  p.value
+##    &lt;chr&gt;               &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+##  1 (Intercept)      -2.03      0.250      -8.14  3.84e-16
+##  2 jobblue-collar   -0.583     0.188      -3.10  1.96e- 3
+##  3 jobentrepreneur  -0.328     0.306      -1.07  2.84e- 1
+##  4 jobhousemaid     -0.0414    0.321      -0.129 8.98e- 1
+##  5 jobmanagement     0.0813    0.169       0.480 6.31e- 1
+##  6 jobretired        0.682     0.240       2.84  4.46e- 3
+##  7 jobself-employed -0.142     0.276      -0.514 6.07e- 1
+##  8 jobservices      -0.326     0.221      -1.47  1.40e- 1
+##  9 jobstudent        0.700     0.304       2.30  2.16e- 2
+## 10 jobtechnician    -0.153     0.183      -0.840 4.01e- 1
+## 11 jobunemployed    -0.260     0.325      -0.800 4.23e- 1
+## 12 jobunknown        0.366     0.444       0.824 4.10e- 1
+## 13 age               0.00404   0.00513     0.787 4.31e- 1
+## 14 loanyes          -0.722     0.167      -4.33  1.48e- 5
+## 15 defaultyes        0.199     0.363       0.549 5.83e- 1</code></pre>
+<pre class="r"><code>#+ job + default + loan
+#bank_y &lt;- glm(y ~ job + default + loan, data = bank, family = &quot;binomial&quot;)
+#summabank_y</code></pre>
+<pre class="r"><code>bank$age &lt;- as.factor(bank$age)
+bank$job &lt;- as.factor(bank$job)
+bank$marital &lt;- as.factor(bank$marital)
+bank$education &lt;- as.factor(bank$education)
+bank$default &lt;- as.factor(bank$default)
+bank$balance &lt;- as.factor(bank$balance)
+bank$housing &lt;- as.factor(bank$housing)
+bank$loan &lt;- as.factor(bank$loan)
+bank$contact &lt;- as.factor(bank$contact)
+bank$day &lt;- as.factor(bank$day)
+bank$month &lt;- as.factor(bank$month)
+bank$duration&lt;- as.factor(bank$duration)
+bank$campaign &lt;- as.factor(bank$campaign)
+bank$pdays &lt;- as.factor(bank$pdays)
+bank$previous &lt;- as.factor(bank$previous)
+bank$poutcome &lt;- as.factor(bank$poutcome)
+summary(bank)</code></pre>
+<pre><code>##       age                job          marital         education    default   
+##  34     : 231   management :969   divorced: 528   primary  : 678   no :4445  
+##  32     : 224   blue-collar:946   married :2797   secondary:2306   yes:  76  
+##  31     : 199   technician :768   single  :1196   tertiary :1350             
+##  36     : 188   admin.     :478                   unknown  : 187             
+##  33     : 186   services   :417                                              
+##  35     : 180   retired    :230                                              
+##  (Other):3313   (Other)    :713                                              
+##     balance     housing     loan           contact          day      
+##  0      : 357   no :1962   no :3830   cellular :2896   20     : 257  
+##  2      :  24   yes:2559   yes: 691   telephone: 301   18     : 226  
+##  1      :  15                         unknown  :1324   19     : 201  
+##  4      :  13                                          21     : 198  
+##  5      :  11                                          14     : 195  
+##  23     :  11                                          17     : 191  
+##  (Other):4090                                          (Other):3253  
+##      month         duration       campaign        pdays         previous   
+##  may    :1398   123    :  27   1      :1734   -1     :3705   0      :3705  
+##  jul    : 706   104    :  25   2      :1264   182    :  23   1      : 286  
+##  aug    : 633   119    :  23   3      : 558   183    :  20   2      : 193  
+##  jun    : 531   58     :  22   4      : 325   92     :  12   3      : 113  
+##  nov    : 389   77     :  22   5      : 167   363    :  12   4      :  78  
+##  apr    : 293   106    :  22   6      : 155   91     :  11   5      :  47  
+##  (Other): 571   (Other):4380   (Other): 318   (Other): 738   (Other):  99  
+##     poutcome    y       
+##  failure: 490   0:4000  
+##  other  : 197   1: 521  
+##  success: 129           
+##  unknown:3705           
+##                         
+##                         
+## </code></pre>
+</div>

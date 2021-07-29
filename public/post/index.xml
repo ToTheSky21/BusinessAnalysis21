@@ -6,14 +6,23 @@
     <description>Recent content in Posts on Tarana-Fundamentals of Data Analystics</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 09 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 15 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Classification models : Logistic Regression</title>
+      <link>/2021/07/15/classification-models-logistic-regression/</link>
+      <pubDate>Thu, 15 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/07/15/classification-models-logistic-regression/</guid>
+      <description>Summary of Data The data is related with direct marketing campaigns of a Portuguese banking institution. The marketing campaigns were based on phone calls. To identify whether a customer would subscribe the bank term deposit or not, most of the time more than one contact to the same customer was required. Now,the information of a customers age, job, marital, education, default, balance, housing, loan, contact along side the data of day, month, duration, campaign, previous days, previous, previous outcome are available.</description>
+    </item>
+    
     <item>
       <title>Regression Models</title>
       <link>/2021/07/09/regression-models/</link>
       <pubDate>Fri, 09 Jul 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/07/09/regression-models/</guid>
-      <description>Dataset at a glance: library(tidyverse) ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ── ## ✓ ggplot2 3.3.4 ✓ purrr 0.3.4 ## ✓ tibble 3.1.2 ✓ dplyr 1.0.7 ## ✓ tidyr 1.1.3 ✓ stringr 1.4.0 ## ✓ readr 1.4.0 ✓ forcats 0.5.1 ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ── ## x dplyr::filter() masks stats::filter() ## x dplyr::lag() masks stats::lag() library(readxl) DiamondRing &amp;lt;- read_xlsx(&amp;quot;Professor_Proposes_Data.xlsx&amp;quot;) head(DiamondRing) ## # A tibble: 6 x 9 ## Carat Colour Clarity Cut Certification Polish Symmetry Price Wholesaler ## &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; ## 1 0.</description>
+      <description>Dataset at a glance: A Professor of machine learning, when planned to buy diamond ring for engagement, came to know that the pricing diamonds is not so easy.As a consequence of that, he collects data from three different wholesalers on 440 different diamonds. Now he has information on prices of these diamonds along with their characteristic features such as color, clarity, cut and carat (famous 4Cs) besides polish, symmetry and certification.</description>
     </item>
     
     <item>
