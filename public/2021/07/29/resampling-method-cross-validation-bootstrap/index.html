@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.84.0" />
+
+
+<title>Resampling method : Cross Validation &amp; Bootstrap - Tarana-Fundamentals of Data Analystics</title>
+<meta property="og:title" content="Resampling method : Cross Validation &amp; Bootstrap - Tarana-Fundamentals of Data Analystics">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/ToTheSky21">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/IslamTajnin">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">7 min read</span>
+    
+
+    <h1 class="article-title">Resampling method : Cross Validation &amp; Bootstrap</h1>
+
+    
+    <span class="article-date">2021-07-29</span>
+    
+
+    <div class="article-content">
+      
+<script src="/2021/07/29/resampling-method-cross-validation-bootstrap/index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>To explore the resampling techniques here the professors diamond ring data and bank data are used consecutively,in order to estimate the test error rates that result from fitting linear and logistic models on these two data sets.</p>
+<pre><code>## # A tibble: 6 x 9
+##   Carat Colour Clarity Cut   Certification Polish Symmetry Price Wholesaler
+##   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;      &lt;dbl&gt;
+## 1  0.92 I      SI2     G     AGS           V      V         3000          1
+## 2  0.92 I      SI2     V     AGS           G      G         3000          1
+## 3  0.82 F      SI2     I     GIA           X      X         3004          1
+## 4  0.81 G      SI1     I     GIA           X      V         3004          1
+## 5  0.9  J      VS2     V     GIA           V      V         3006          1
+## 6  0.87 F      SI2     I     AGS           G      V         3007          1</code></pre>
+<div id="for-linear-regression-model" class="section level2">
+<h2>For Linear Regression model</h2>
+<p>To measure the accuracy of linear model with Diamond ring data by Cross Validation and bootstrap method, here, the simple linear model of Price and Carat is used below.</p>
+</div>
+<div id="cross-validation-method" class="section level2">
+<h2>Cross Validation method</h2>
+<p>For cross validation method lets revisit the relation between the Price and Carat variable by a simple plot from previous excercise.
+<img src="/2021/07/29/resampling-method-cross-validation-bootstrap/index_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+Here, the cv.glm function, which is a part of the boot library, results two numbers in the delta vector. In this case the numbers are identical. Below, we discuss a situation in which the two numbers differ. Our cross-validation estimate for the test error is approximately 199763.</p>
+<pre><code>## [1] 199764.9 199762.9</code></pre>
+<p>Now the cross validation function is used to implement k-fold CV. Below k = 10 is used on the Diamond Ring data set.In this data set, the two estimates are very similar to each other, as we see in the graph below.</p>
+<pre><code>## [1] 199764.9</code></pre>
+<p><img src="/2021/07/29/resampling-method-cross-validation-bootstrap/index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+## Bootstrap methods</p>
+<p>For performing a bootstrap analysis, first, a function is created, where linear regression is calculated. Then using the boot function, to perform the bootstrap with 100 sampling observations is taken repeatedly from the data set with replacement.</p>
+<pre><code>## (Intercept)           X 
+##    5916.001   -3507.030</code></pre>
+<pre><code>## 
+## ORDINARY NONPARAMETRIC BOOTSTRAP
+## 
+## 
+## Call:
+## boot(data = DiamondRing, statistic = alpha.fn, R = 1000)
+## 
+## 
+## Bootstrap Statistics :
+##      original     bias    std. error
+## t1* -200.4836  0.8129526    24.61359
+## t2* 2864.7325 -2.6054273    56.62006</code></pre>
+<p>Now to estimating the accuracy of a Linear Regression Model, the standard error is calculated that results, the bias (which is not an important measure in this case) and standard error of 23.76 and 52.11.</p>
+<pre><code>## 
+## ORDINARY NONPARAMETRIC BOOTSTRAP
+## 
+## 
+## Call:
+## boot(data = DiamondRing, statistic = boot.fn, R = 1000)
+## 
+## 
+## Bootstrap Statistics :
+##      original      bias    std. error
+## t1* -200.4836 -0.07851603    23.67233
+## t2* 2864.7325 -0.36553330    53.35118</code></pre>
+</div>
+<div id="compare-to-the-linear-model" class="section level1">
+<h1>Compare to the linear model</h1>
+<p>If we compare this result of Bootstrap Statistics with the regular model, we see that standard error, 43.11 and 56.04, were much higher in the previous model.The bootstrap approach is likely giving a more accurate estimate of the standard errors of ˆβ0 and ˆβ1 than is the summary function,that we observe comparing these two.</p>
+<pre><code>## 
+## Call:
+## lm(formula = Price ~ Carat, data = DiamondRing)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1705.8  -165.9  -111.9   135.2   994.7 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  -200.48      43.11   -4.65  4.4e-06 ***
+## Carat        2864.73      56.04   51.12  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 446 on 438 degrees of freedom
+## Multiple R-squared:  0.8564, Adjusted R-squared:  0.8561 
+## F-statistic:  2613 on 1 and 438 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="nd-order-model" class="section level1">
+<h1>2nd order model</h1>
+<p>Below the quadratic model to the Diamond ring data, with simple linear model of Price and Carat is fitted to compute the bootstrap standard error estimates and the standard linear regression estimates. Here we see the difference between the bootstrap estimates and the standard estimates of SE(ˆβ0), SE(ˆβ1) and SE(ˆβ2).</p>
+<pre><code>## 
+## ORDINARY NONPARAMETRIC BOOTSTRAP
+## 
+## 
+## Call:
+## boot(data = DiamondRing, statistic = boot.fn, R = 1000)
+## 
+## 
+## Bootstrap Statistics :
+##      original     bias    std. error
+## t1* -1103.022  -8.228527    103.9632
+## t2*  6953.033  36.359779    423.1070
+## t3* -3098.189 -30.028764    309.4035</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Price ~ Carat + I(Carat^2), data = DiamondRing)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -895.8 -188.8 -157.1  356.2  768.7 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -1103.02      69.86  -15.79   &lt;2e-16 ***
+## Carat        6953.03     277.34   25.07   &lt;2e-16 ***
+## I(Carat^2)  -3098.19     207.31  -14.95   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 363.2 on 437 degrees of freedom
+## Multiple R-squared:  0.905,  Adjusted R-squared:  0.9046 
+## F-statistic:  2081 on 2 and 437 DF,  p-value: &lt; 2.2e-16</code></pre>
+<div id="for-logistic-regression-model" class="section level2">
+<h2>For Logistic Regression model</h2>
+<p>Here, for the Logistic Regression model Bank data is used to measure the model accuracy by Cross Validation and bootstrap method. The model of the variable age, job, default, loan with the response variable is used in this case.</p>
+<pre><code>##   age         job marital education default balance housing loan  contact day
+## 1  30  unemployed married   primary      no    1787      no   no cellular  19
+## 2  33    services married secondary      no    4789     yes  yes cellular  11
+## 3  35  management  single  tertiary      no    1350     yes   no cellular  16
+## 4  30  management married  tertiary      no    1476     yes  yes  unknown   3
+## 5  59 blue-collar married secondary      no       0     yes   no  unknown   5
+## 6  35  management  single  tertiary      no     747      no   no cellular  23
+##   month duration campaign pdays previous poutcome  y
+## 1   oct       79        1    -1        0  unknown no
+## 2   may      220        1   339        4  failure no
+## 3   apr      185        1   330        1  failure no
+## 4   jun      199        4    -1        0  unknown no
+## 5   may      226        1    -1        0  unknown no
+## 6   feb      141        2   176        3  failure no</code></pre>
+<p>#Leave-One-Out Cross-Validation</p>
+<p>Here, our cross-validation estimate for the test error is approximately 0.1012752 and the numbers are identical for both the error.</p>
+<pre><code>## [1] 0.1012752 0.1012752</code></pre>
+<pre><code>## [1] 0.1017364 0.1005418 0.1006181 0.1005007 0.1005970</code></pre>
+</div>
+<div id="k-fold-cross-validation" class="section level2">
+<h2>k-Fold Cross-Validation</h2>
+<p>In the k-fold Cross-Validation, the numbers associated with delta differ slightly. On this Bank data set, the estimates are very similar to each other, that we see below.</p>
+<pre><code>##  [1] 0.1017277 0.1004426 0.1005191 0.1006711 0.1006946 0.1006994 0.1004787
+##  [8] 0.1007053 0.1008135 0.1009292</code></pre>
+</div>
+<div id="bootstrap-methods" class="section level2">
+<h2>bootstrap methods</h2>
+<p>For performing a bootstrap analysis a function is created, where logistic regression is calculated here using the variable age, job, default and loan with response variable. Then using the boot function 100 sampling observations is taken repeatedly from the data set with replacement.</p>
+<pre><code>##  (Intercept)            X 
+## -1.297855416  0.003025066</code></pre>
+<pre><code>## 
+## ORDINARY NONPARAMETRIC BOOTSTRAP
+## 
+## 
+## Call:
+## boot(data = bank, statistic = alpha.fn, R = 1000)
+## 
+## 
+## Bootstrap Statistics :
+##        original        bias    std. error
+## t1* -2.70728945 -0.0169543199 0.239304867
+## t2*  0.01354521  0.0002770425 0.004667183</code></pre>
+</div>
+<div id="estimating-the-accuracy-of-a-logistic-regression-model" class="section level2">
+<h2>Estimating the Accuracy of a Logistic Regression Model</h2>
+<pre><code>## 
+## ORDINARY NONPARAMETRIC BOOTSTRAP
+## 
+## 
+## Call:
+## boot(data = bank, statistic = boot.fn, R = 1000)
+## 
+## 
+## Bootstrap Statistics :
+##        original        bias    std. error
+## t1* -2.02918065  4.291627e-02 0.481295684
+## t2*  0.01279501 -4.501006e-05 0.005001199
+## t3*  0.02485862  1.640940e-04 0.013837671
+## t4*  0.16272050 -3.507994e-02 0.386281000
+## t5* -0.75619588 -1.198420e-02 0.164808833</code></pre>
+</div>
+<div id="compare-to-the-logistic-model" class="section level2">
+<h2>Compare to the logistic model</h2>
+<p>We see that, Bootstrap Statistics and the regular model coefficients results almost same standard error. This means, our model has significant accuracy.</p>
+<pre><code>##                Estimate  Std. Error    z value     Pr(&gt;|z|)
+## (Intercept) -2.02918065 0.452554974 -4.4838324 7.331426e-06
+## age          0.01279501 0.004243671  3.0150796 2.569118e-03
+## job          0.02485862 0.014389886  1.7275066 8.407673e-02
+## default      0.16272050 0.361090637  0.4506362 6.522518e-01
+## loan        -0.75619588 0.165368151 -4.5728024 4.812439e-06</code></pre>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+
