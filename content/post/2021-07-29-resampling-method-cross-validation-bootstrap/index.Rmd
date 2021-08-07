@@ -116,6 +116,7 @@ Here, for the Logistic Regression model Bank data is used to measure the model a
 library(openintro)
 bank <- read.table("bank.csv", sep=";", header=T)
 head(bank)
+#nrow(bank) 4521 rows
 ```
 #Leave-One-Out Cross-Validation
 ```{r warning= FALSE, echo= FALSE, message=FALSE}
@@ -126,7 +127,7 @@ bank$y <- as.factor(bank$y)
 bank$job <- as.numeric(as.factor(bank$job))
 bank$default <- as.numeric(as.factor(bank$default))
 bank$loan <- as.numeric(as.factor(bank$loan))
-#head(bank)
+head(bank)
 glm.fit = glm(y ~ age + job + default + loan, family = "binomial", data = bank)
 cv.err = cv.glm(bank, glm.fit)
 
