@@ -101,68 +101,68 @@ ggplot(d, aes(x = p, y = logit_p)) +
 
 To improve the accuracy of the model, the following steps are taken, at first, the data is spitted randomly into training set (70% for building a predictive model) and test set (30% for evaluating the model) after removing potential outliers from the data set.The customer subscribed ‘yes’ and ‘no’ are split approximately in 1:8 ratio, as shown above.So, before building the logit model, we need to build the samples such that both the 1’s and 0’s are in approximately equal proportions.
 
-```{r setup, include=TRUE}
-library(caret)
-'%ni%' <- Negate('%in%')  
-options(scipen=999)  
+## Balancing the classes of response variable
+
+The customer subscribed for the term loan as "yes" and "no" in the data set are now divided in the same ratio as follows:
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+
 set.seed(100)
-trainDataIndex <- createDataPartition(bank$y, p=0.7, list = F)  # 70% training data
-trainData <- bank[trainDataIndex, ]
-testData <- bank[-trainDataIndex, ]
-head(testData)
+#bank %>% drop_na(bank)
+bank$y <- as.factor(bank$y)
+#splitting
+bank_split <- initial_split(bank, prop = 0.70, strata=y)
+
+bank_train <- training(bank_split)
+bank_test  <- testing(bank_split)
+#head(testData)
+head(bank)
 ```
 ## Balancing the classes of response variable
 
 The customer subscribed for the term loan as "yes" and "no" in the data set are now divided in the same ratio as follows:
-```{r setup, include=TRUE}
-set.seed(100)
-down_train <- downSample(x = trainData[, colnames(trainData) %ni% "y"],
-                         y = trainData$y)
 
-table(down_train$Class)
-```
 ## Model with age, job, default and loan
-```{r setup, include=TRUE}
-logitmod1 <- glm(Class ~ age + job + default + loan , family = "binomial", data=down_train)
-summary(logitmod1)
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+logitmod1 <- glm(y ~ age + job + default + loan , family = "binomial", data=bank_train)
+logitmod1
 ```
 ## Model with all dependent variable
-```{r setup, include=TRUE}
-logitmod2 <- glm(Class ~ . , family = "binomial", data=down_train)
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+logitmod2 <- glm(y ~ . , family = "binomial", data=bank_train)
 summary(logitmod2)
 ```
 ## Model with contact, duration and poutcome
-```{r setup, include=TRUE}
-logitmod3 <- glm(Class ~ contact + duration + poutcome , family = "binomial", data=down_train)
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+logitmod3 <- glm(y ~ contact + duration + poutcome , family = "binomial", data=bank_train)
 summary(logitmod3)
 ```
-The logit model is now built.Comparing above models in terms of null and residual deviance, we find for that the logitmodel3 gives the best result. As, we know,the smaller the AIC, the better the model fits the data.Also, in comparison of null and residual deviance, the above model gives best result.
+The logit models are now built.Comparing above models in terms of null and residual deviance, we find for that the logitmodel3 gives the best result. As, we know,the smaller the AIC, the better the model fits the data.Also, in comparison of null and residual deviance, the above model gives best result.
 
-## Predict the response
+## Predict the response 
 Now to predict the response on testData we will calculate the the prediction probabilities that the observation is yes for each observation.Let us compute the accuracy, which is nothing but the proportion of y_pred that matches with y_act, calculated below:
-```{r setup, include=TRUE}
-pred <- predict(logitmod2, newdata = testData, type = "response")
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+pred <- predict(logitmod2, newdata = bank_test, type = "response")
 ```
 
-```{r setup, include=TRUE}
+```{r echo = FALSE, message=FALSE, warning=FALSE}
 y_pred_num <- ifelse(pred > 0.5, 1, 0)
 y_pred <- factor(y_pred_num, levels=c(0, 1))
-y_act <- testData$y
+y_act <- bank_test$y
 ```
 
-```{r setup, include=TRUE}
+```{r echo = FALSE, message=FALSE, warning=FALSE}
 mean(y_pred == y_act)
 ```
 Here, we have an accuracy rate of 80%.As we know. The common practice is to take the probability cutoff as 0.5. If the probability of Y is > 0.5, then it can be classified an event (subscribe).Here, 80% of the Y values belong to "Yes" and 20% belong to "No" class for the customer subscribed to term deposit. 
 
 ## Summary of variables:
 ```{r echo = FALSE, message=FALSE, warning=FALSE}
-bank$age <- as.factor(bank$age)
+#bank$age <- as.factor(bank$age)
 bank$job <- as.factor(bank$job)
 bank$marital <- as.factor(bank$marital)
 bank$education <- as.factor(bank$education)
 bank$default <- as.factor(bank$default)
-bank$balance <- as.factor(bank$balance)
+#bank$balance <- as.factor(bank$balance)
 bank$housing <- as.factor(bank$housing)
 bank$loan <- as.factor(bank$loan)
 bank$contact <- as.factor(bank$contact)
@@ -173,7 +173,8 @@ bank$campaign <- as.factor(bank$campaign)
 bank$pdays <- as.factor(bank$pdays)
 bank$previous <- as.factor(bank$previous)
 bank$poutcome <- as.factor(bank$poutcome)
-summary(bank)
+#summary(bank)
+head(bank)
 ```
 ## Summary of findings:
 

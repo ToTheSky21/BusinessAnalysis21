@@ -10,7 +10,7 @@ categories:
   - Tidyverse
 tags: []
 ---
-## Assessing the financial benefit of the project 
+***Assessing the financial benefit of the project***  
 
 This project would benefit credit card providers by detecting customers who have the potential of missing their credit card payments. Although this is not an unfamiliar situation for these institutions, it affects their revenue every year by making them prosecute these clients. This project gives you two options two avoid these customers based on two categories of information you already have!
 
@@ -23,8 +23,10 @@ The second piece of information is credit bureau data. Using this information, o
 Please note provided percents could later be modified by a limited modification in the model. For example, when you need to attract new customers, model could accept more customers with expense of accepting more bad clients and vise versa.
 
 
-## Libraries
-```{r}
+***Libraries*** 
+
+Required packages for the data analysis are installed first of all.
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 library(tidymodels)
 library(tidyverse)
 library(Information)
@@ -38,7 +40,7 @@ library(brglm)
 library(yardstick)
 library(ggplot2)
 ```
-## import two dataset and rename variables
+***import two dataset and rename variables***
 
 For the convenience of data analysis, we have renamed the variables from the original dataset, after importing the there are as below:
 
@@ -82,7 +84,7 @@ names(demogs)
 
 ```
 
-## bind two dataset, reordering columns (outcome: master dataset)
+***bind two dataset, reordering columns (outcome: master dataset)***
 
 Here two datasets of demographic and credit bureau data are combined. besides, We ordered the column names and saved the dataset named as master here.
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
@@ -101,7 +103,7 @@ master <- master[,
                )
                        ]
 ```
-## weight of evidence (WOE) (and, equivalently, information value analysis)
+***weight of evidence (WOE) (and, equivalently, information value analysis)***
 
 As we know, weight of evidence and information value helps to explore data and screen variables and hence it will be easier for us to use those values as a benchmark to screen variables in relation to the dependent variable.Before calculating those values we need to prepare our data first.
 

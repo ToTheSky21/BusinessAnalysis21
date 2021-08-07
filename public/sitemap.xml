@@ -11,6 +11,9 @@
     <loc>/2021/08/07/final-project-business-analysis/</loc>
     <lastmod>2021-08-07T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>/2021/08/07/final-project-business-analytics/</loc>
+    <lastmod>2021-08-07T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>/categories/ggplot2/</loc>
     <lastmod>2021-08-07T00:00:00+00:00</lastmod>
   </url><url>
@@ -26,7 +29,19 @@
     <loc>/categories/tidyverse/</loc>
     <lastmod>2021-08-07T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>/tags/classification/</loc>
+    <lastmod>2021-08-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/data_visualization/</loc>
+    <lastmod>2021-08-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/data_wrangling/</loc>
+    <lastmod>2021-08-01T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>/2021/08/01/final-project-business-analytics/</loc>
+    <lastmod>2021-08-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
     <lastmod>2021-08-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/2021/07/29/resampling-method-cross-validation-bootstrap/</loc>
@@ -85,7 +100,5 @@
   </url><url>
     <loc>/about/</loc>
     <lastmod>2016-05-05T21:48:51-07:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
   </url>
 </urlset>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>data_wrangling on Tarana-Fundamentals of Data Analystics</title>
+    <link>/tags/data_wrangling/</link>
+    <description>Recent content in data_wrangling on Tarana-Fundamentals of Data Analystics</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 01 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/data_wrangling/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Final Project: Business Analytics</title>
+      <link>/2021/08/01/final-project-business-analytics/</link>
+      <pubDate>Sun, 01 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/08/01/final-project-business-analytics/</guid>
+      <description>Assessing the financial benefit of the project This project would benefit credit card providers by detecting customers who have the potential of missing their credit card payments. Although this is not an unfamiliar situation for these institutions, it affects their revenue every year by making them prosecute these clients. This project gives you two options two avoid these customers based on two categories of information you already have!</description>
+    </item>
+    
+  </channel>
+</rss>
