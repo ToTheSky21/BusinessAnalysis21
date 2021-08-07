@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">6 min read</span>
+    <span class="article-duration">9 min read</span>
     
 
     <h1 class="article-title">Classification models : Logistic Regression</h1>
@@ -78,8 +78,8 @@
 
 <div id="summary-of-data" class="section level2">
 <h2>Summary of Data</h2>
-<p>The data is related with direct marketing campaigns of a Portuguese banking institution. The marketing campaigns were based on phone calls. To identify whether a customer would subscribe the bank term deposit or not, most of the time more than one contact to the same customer was required. Now,the information of a customers age, job, marital, education, default, balance, housing, loan, contact along side the data of day, month, duration, campaign, previous days, previous, previous outcome are available.
-These characteristics are considered important features in determining if the client will subscribe a term deposit or not, but it was not certain how important are each of these features really are.
+<pre><code>The data is related with direct marketing campaigns of a Portuguese banking institution. The marketing campaigns were based on phone calls. To identify whether a customer would subscribe the bank term deposit or not, most of the time more than one contact to the same customer was required. Now,the information of a customers age, job, marital, education, default, balance, housing, loan, contact along side the data of day, month, duration, campaign, previous days, previous, previous outcome are available.</code></pre>
+<p>These characteristics are considered important features in determining if the client will subscribe a term deposit or not, but it was not certain how important are each of these features really are.
 Here, classification model will build with logistics regression to predict if the client will subscribe a term deposit or not.</p>
 </div>
 <div id="data-analysis" class="section level2">
@@ -99,137 +99,206 @@ Here, classification model will build with logistics regression to predict if th
 ## 4   jun      199        4    -1        0  unknown no
 ## 5   may      226        1    -1        0  unknown no
 ## 6   feb      141        2   176        3  failure no</code></pre>
-<pre class="r"><code>table(bank$y)</code></pre>
+</div>
+<div id="summary-of-response-variable" class="section level2">
+<h2>Summary of response variable</h2>
 <pre><code>## 
 ##   no  yes 
 ## 4000  521</code></pre>
-<pre class="r"><code>prop.table(table(bank$y))</code></pre>
 <pre><code>## 
 ##      no     yes 
 ## 0.88476 0.11524</code></pre>
-<p>Here, we see that only 521 customer was subscribed for the term deposit and 4000 customer was not subscribed where as the proportion is 0.115 and 0.885 respectively.</p>
-<pre class="r"><code>#bank$y &lt;- as.factor(bank$y)
-bank$y &lt;- ifelse(bank$y == &quot;yes&quot;, 1, 0)
-bank$y &lt;- factor(bank$y, levels = c(0, 1))</code></pre>
+<p>Here, we see that only 521 customer was subscribed for the term deposit and 4000 customer was not subscribed where as the proportion is 0.115 and 0.885 respectively.
+## Bivariate analysis</p>
 </div>
 <div id="term-deposit-and-customers-age" class="section level2">
 <h2>Term deposit and Customers Age</h2>
-<pre class="r"><code>bank %&gt;%
-  ggplot(aes(x = age, fill = y)) +
-  geom_bar(position = &quot;fill&quot;) +
-  labs(
-    x = &#39;Age of a customer&#39;, 
-    fill = &quot;Term deposit&quot;, 
-    y = NULL,
-    title = &#39;Term deposit vs. Customers Age&#39;
-    ) +
-  scale_fill_manual(values = c(&quot;#DEB4A0&quot;, &quot;#CA235F&quot;)) +
-  theme(axis.text.x = element_text(angle = 90)) </code></pre>
 <p><img src="/2021/07/15/classification-models-logistic-regression/index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
-Is is observed that, most of the customer subscribed with term deposit was with higher aged.
-## Term deposit and Marital status</p>
-<pre class="r"><code>bank %&gt;%
-  ggplot(aes(x = marital, fill = y)) +
-  geom_bar(position = &quot;fill&quot;) +
-  labs(
-    x = &#39;Whether a customer is Divorced, Married or Single&#39;, 
-    fill = &quot;Term deposit&quot;, 
-    y = NULL,
-    title = &#39;Term deposit vs. Marital status&#39;
-    ) +
-  scale_fill_manual(values = c(&quot;#DEB4A0&quot;, &quot;#CA235F&quot;))</code></pre>
-<p><img src="/2021/07/15/classification-models-logistic-regression/index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+Is is observed that, most of the customer subscribed with term deposit, was with higher aged.
+## Term deposit and Marital status
+<img src="/2021/07/15/classification-models-logistic-regression/index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 It is seen here that, the Marital status did not effect significantly on subscribing term loan, still the customer with status Divorced and Single subscribed more than Married customers.
-## Term deposit and Job</p>
-<pre class="r"><code>bank %&gt;%
-  ggplot(aes(x = job, fill = y)) +
-  geom_bar(position = &quot;fill&quot;) +
-  labs(
-    x = &#39;Job&#39;, 
-    fill = &quot;Term deposit&quot;, 
-    y = NULL,
-    title = &#39;Term deposit vs. Job&#39;
-    ) +
-  scale_fill_manual(values = c(&quot;#DEB4A0&quot;, &quot;#CA235F&quot;)) +
-  theme(axis.text.x = element_text(angle = 90)) </code></pre>
-<p><img src="/2021/07/15/classification-models-logistic-regression/index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
-<img src="/2021/07/15/classification-models-logistic-regression/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<pre class="r"><code>#bank$age &lt;- as.factor(bank$age)
-#bank$y &lt;- as.factor(bank$y)
-bank_fit &lt;- logistic_reg() %&gt;%
-  set_engine(&quot;glm&quot;) %&gt;%
-  fit(y ~ job + age + job + loan + default , data = bank, family = &quot;binomial&quot;)
-tidy(bank_fit)</code></pre>
-<pre><code>## # A tibble: 15 x 5
-##    term             estimate std.error statistic  p.value
-##    &lt;chr&gt;               &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-##  1 (Intercept)      -2.03      0.250      -8.14  3.84e-16
-##  2 jobblue-collar   -0.583     0.188      -3.10  1.96e- 3
-##  3 jobentrepreneur  -0.328     0.306      -1.07  2.84e- 1
-##  4 jobhousemaid     -0.0414    0.321      -0.129 8.98e- 1
-##  5 jobmanagement     0.0813    0.169       0.480 6.31e- 1
-##  6 jobretired        0.682     0.240       2.84  4.46e- 3
-##  7 jobself-employed -0.142     0.276      -0.514 6.07e- 1
-##  8 jobservices      -0.326     0.221      -1.47  1.40e- 1
-##  9 jobstudent        0.700     0.304       2.30  2.16e- 2
-## 10 jobtechnician    -0.153     0.183      -0.840 4.01e- 1
-## 11 jobunemployed    -0.260     0.325      -0.800 4.23e- 1
-## 12 jobunknown        0.366     0.444       0.824 4.10e- 1
-## 13 age               0.00404   0.00513     0.787 4.31e- 1
-## 14 loanyes          -0.722     0.167      -4.33  1.48e- 5
-## 15 defaultyes        0.199     0.363       0.549 5.83e- 1</code></pre>
-<pre class="r"><code>#+ job + default + loan
-#bank_y &lt;- glm(y ~ job + default + loan, data = bank, family = &quot;binomial&quot;)
-#summabank_y</code></pre>
-<pre class="r"><code>bank$age &lt;- as.factor(bank$age)
-bank$job &lt;- as.factor(bank$job)
-bank$marital &lt;- as.factor(bank$marital)
-bank$education &lt;- as.factor(bank$education)
-bank$default &lt;- as.factor(bank$default)
-bank$balance &lt;- as.factor(bank$balance)
-bank$housing &lt;- as.factor(bank$housing)
-bank$loan &lt;- as.factor(bank$loan)
-bank$contact &lt;- as.factor(bank$contact)
-bank$day &lt;- as.factor(bank$day)
-bank$month &lt;- as.factor(bank$month)
-bank$duration&lt;- as.factor(bank$duration)
-bank$campaign &lt;- as.factor(bank$campaign)
-bank$pdays &lt;- as.factor(bank$pdays)
-bank$previous &lt;- as.factor(bank$previous)
-bank$poutcome &lt;- as.factor(bank$poutcome)
-summary(bank)</code></pre>
-<pre><code>##       age                job          marital         education    default   
-##  34     : 231   management :969   divorced: 528   primary  : 678   no :4445  
-##  32     : 224   blue-collar:946   married :2797   secondary:2306   yes:  76  
-##  31     : 199   technician :768   single  :1196   tertiary :1350             
-##  36     : 188   admin.     :478                   unknown  : 187             
-##  33     : 186   services   :417                                              
-##  35     : 180   retired    :230                                              
-##  (Other):3313   (Other)    :713                                              
-##     balance     housing     loan           contact          day      
-##  0      : 357   no :1962   no :3830   cellular :2896   20     : 257  
-##  2      :  24   yes:2559   yes: 691   telephone: 301   18     : 226  
-##  1      :  15                         unknown  :1324   19     : 201  
-##  4      :  13                                          21     : 198  
-##  5      :  11                                          14     : 195  
-##  23     :  11                                          17     : 191  
-##  (Other):4090                                          (Other):3253  
-##      month         duration       campaign        pdays         previous   
-##  may    :1398   123    :  27   1      :1734   -1     :3705   0      :3705  
-##  jul    : 706   104    :  25   2      :1264   182    :  23   1      : 286  
-##  aug    : 633   119    :  23   3      : 558   183    :  20   2      : 193  
-##  jun    : 531   58     :  22   4      : 325   92     :  12   3      : 113  
-##  nov    : 389   77     :  22   5      : 167   363    :  12   4      :  78  
-##  apr    : 293   106    :  22   6      : 155   91     :  11   5      :  47  
-##  (Other): 571   (Other):4380   (Other): 318   (Other): 738   (Other):  99  
-##     poutcome    y       
-##  failure: 490   0:4000  
-##  other  : 197   1: 521  
-##  success: 129           
-##  unknown:3705           
-##                         
-##                         
-## </code></pre>
+## Term deposit and Job
+<img src="/2021/07/15/classification-models-logistic-regression/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="logistic-regression-model-building" class="section level2">
+<h2>Logistic regression model building</h2>
+<p>Logistic regression works for a data that contain continuous and/or categorical predictor variables. One advantage of logistic regression is that it computes a prediction probability score of an event.And, for predicting if a customer will default on a loan or not, or subscribe for a new product or not in Banking sector, binary classification or logistic regression is an effective method.Logistic regression achieves this by taking the log odds of the event ln(P/1?P), where, P is the probability of event. So P always lies between 0 and 1 as shown below:
+<img src="/2021/07/15/classification-models-logistic-regression/index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+## Training and Test data</p>
+<p>To improve the accuracy of the model, the following steps are taken, at first, the data is spitted randomly into training set (70% for building a predictive model) and test set (30% for evaluating the model) after removing potential outliers from the data set.The customer subscribed ‘yes’ and ‘no’ are split approximately in 1:8 ratio, as shown above.So, before building the logit model, we need to build the samples such that both the 1’s and 0’s are in approximately equal proportions.</p>
+</div>
+<div id="balancing-the-classes-of-response-variable" class="section level2">
+<h2>Balancing the classes of response variable</h2>
+<p>The customer subscribed for the term loan as “yes” and “no” in the data set are now divided in the same ratio as follows:</p>
+<pre><code>##   age         job marital education default balance housing loan  contact day
+## 1  30  unemployed married   primary      no    1787      no   no cellular  19
+## 2  33    services married secondary      no    4789     yes  yes cellular  11
+## 3  35  management  single  tertiary      no    1350     yes   no cellular  16
+## 4  30  management married  tertiary      no    1476     yes  yes  unknown   3
+## 5  59 blue-collar married secondary      no       0     yes   no  unknown   5
+## 6  35  management  single  tertiary      no     747      no   no cellular  23
+##   month duration campaign pdays previous poutcome y
+## 1   oct       79        1    -1        0  unknown 0
+## 2   may      220        1   339        4  failure 0
+## 3   apr      185        1   330        1  failure 0
+## 4   jun      199        4    -1        0  unknown 0
+## 5   may      226        1    -1        0  unknown 0
+## 6   feb      141        2   176        3  failure 0</code></pre>
+</div>
+<div id="balancing-the-classes-of-response-variable-1" class="section level2">
+<h2>Balancing the classes of response variable</h2>
+<p>The customer subscribed for the term loan as “yes” and “no” in the data set are now divided in the same ratio as follows:</p>
+</div>
+<div id="model-with-age-job-default-and-loan" class="section level2">
+<h2>Model with age, job, default and loan</h2>
+<pre><code>## 
+## Call:  glm(formula = y ~ age + job + default + loan, family = &quot;binomial&quot;, 
+##     data = bank_train)
+## 
+## Coefficients:
+##      (Intercept)               age    jobblue-collar   jobentrepreneur  
+##        -2.243997          0.008980         -0.636656         -0.214752  
+##     jobhousemaid     jobmanagement        jobretired  jobself-employed  
+##        -0.036180          0.003832          0.606716         -0.058588  
+##      jobservices        jobstudent     jobtechnician     jobunemployed  
+##        -0.331750          0.894563         -0.157101         -0.151256  
+##       jobunknown        defaultyes           loanyes  
+##         0.616313          0.003018         -0.533830  
+## 
+## Degrees of Freedom: 3163 Total (i.e. Null);  3149 Residual
+## Null Deviance:       2259 
+## Residual Deviance: 2197  AIC: 2227</code></pre>
+</div>
+<div id="model-with-all-dependent-variable" class="section level2">
+<h2>Model with all dependent variable</h2>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ ., family = &quot;binomial&quot;, data = bank_train)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -3.0693  -0.3749  -0.2491  -0.1487   2.9850  
+## 
+## Coefficients:
+##                      Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)        -2.977e+00  7.163e-01  -4.157 3.23e-05 ***
+## age                 5.758e-03  8.448e-03   0.682 0.495469    
+## jobblue-collar     -1.752e-01  2.901e-01  -0.604 0.546062    
+## jobentrepreneur     5.615e-02  4.462e-01   0.126 0.899855    
+## jobhousemaid       -1.606e-01  4.825e-01  -0.333 0.739333    
+## jobmanagement      -1.709e-02  2.912e-01  -0.059 0.953207    
+## jobretired          5.015e-01  3.720e-01   1.348 0.177649    
+## jobself-employed   -1.270e-01  4.365e-01  -0.291 0.771156    
+## jobservices        -3.010e-02  3.280e-01  -0.092 0.926878    
+## jobstudent          4.796e-01  4.577e-01   1.048 0.294710    
+## jobtechnician      -1.083e-01  2.767e-01  -0.391 0.695562    
+## jobunemployed      -5.269e-01  5.279e-01  -0.998 0.318264    
+## jobunknown          8.680e-01  6.567e-01   1.322 0.186261    
+## maritalmarried     -6.742e-01  2.065e-01  -3.265 0.001095 ** 
+## maritalsingle      -3.441e-01  2.424e-01  -1.419 0.155841    
+## educationsecondary  2.574e-01  2.477e-01   1.039 0.298610    
+## educationtertiary   4.500e-01  2.854e-01   1.577 0.114881    
+## educationunknown   -3.834e-01  4.256e-01  -0.901 0.367692    
+## defaultyes          5.979e-01  5.438e-01   1.099 0.271610    
+## balance            -5.295e-06  2.040e-05  -0.260 0.795180    
+## housingyes         -3.901e-01  1.676e-01  -2.327 0.019951 *  
+## loanyes            -4.142e-01  2.271e-01  -1.823 0.068238 .  
+## contacttelephone   -5.519e-02  2.860e-01  -0.193 0.847013    
+## contactunknown     -1.631e+00  2.798e-01  -5.830 5.54e-09 ***
+## day                 1.439e-02  9.879e-03   1.457 0.145182    
+## monthaug           -3.015e-01  3.036e-01  -0.993 0.320695    
+## monthdec           -1.732e-01  8.559e-01  -0.202 0.839653    
+## monthfeb            1.666e-01  3.614e-01   0.461 0.644757    
+## monthjan           -6.802e-01  4.298e-01  -1.583 0.113534    
+## monthjul           -7.249e-01  3.050e-01  -2.377 0.017453 *  
+## monthjun            8.449e-01  3.542e-01   2.386 0.017056 *  
+## monthmar            1.805e+00  4.498e-01   4.013 5.99e-05 ***
+## monthmay           -3.528e-01  2.828e-01  -1.247 0.212224    
+## monthnov           -8.017e-01  3.369e-01  -2.380 0.017314 *  
+## monthoct            1.455e+00  4.041e-01   3.600 0.000318 ***
+## monthsep            1.143e+00  4.993e-01   2.290 0.022040 *  
+## duration            4.290e-03  2.470e-04  17.369  &lt; 2e-16 ***
+## campaign           -6.399e-02  3.280e-02  -1.951 0.051103 .  
+## pdays               4.359e-04  1.136e-03   0.384 0.701170    
+## previous           -3.616e-03  4.593e-02  -0.079 0.937246    
+## poutcomeother       5.976e-01  3.179e-01   1.880 0.060118 .  
+## poutcomesuccess     2.330e+00  3.355e-01   6.946 3.76e-12 ***
+## poutcomeunknown    -1.870e-01  3.699e-01  -0.505 0.613229    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 2258.7  on 3163  degrees of freedom
+## Residual deviance: 1490.7  on 3121  degrees of freedom
+## AIC: 1576.7
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+</div>
+<div id="model-with-contact-duration-and-poutcome" class="section level2">
+<h2>Model with contact, duration and poutcome</h2>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ contact + duration + poutcome, family = &quot;binomial&quot;, 
+##     data = bank_train)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.8032  -0.4157  -0.3129  -0.1790   2.8928  
+## 
+## Coefficients:
+##                    Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)      -3.0098215  0.1869252 -16.102  &lt; 2e-16 ***
+## contacttelephone  0.1056102  0.2462719   0.429   0.6680    
+## contactunknown   -1.3642291  0.2082502  -6.551 5.72e-11 ***
+## duration          0.0039227  0.0002278  17.222  &lt; 2e-16 ***
+## poutcomeother     0.5842294  0.2904080   2.012   0.0442 *  
+## poutcomesuccess   2.4510335  0.2935793   8.349  &lt; 2e-16 ***
+## poutcomeunknown  -0.3988580  0.1894095  -2.106   0.0352 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 2258.7  on 3163  degrees of freedom
+## Residual deviance: 1664.4  on 3157  degrees of freedom
+## AIC: 1678.4
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<p>The logit models are now built.Comparing above models in terms of null and residual deviance, we find for that the logitmodel3 gives the best result. As, we know,the smaller the AIC, the better the model fits the data.Also, in comparison of null and residual deviance, the above model gives best result.</p>
+</div>
+<div id="predict-the-response" class="section level2">
+<h2>Predict the response</h2>
+<p>Now to predict the response on testData we will calculate the the prediction probabilities that the observation is yes for each observation.Let us compute the accuracy, which is nothing but the proportion of y_pred that matches with y_act, calculated below:</p>
+<pre><code>## [1] 0.899042</code></pre>
+<p>Here, we have an accuracy rate of 80%.As we know. The common practice is to take the probability cutoff as 0.5. If the probability of Y is &gt; 0.5, then it can be classified an event (subscribe).Here, 80% of the Y values belong to “Yes” and 20% belong to “No” class for the customer subscribed to term deposit.</p>
+</div>
+<div id="summary-of-variables" class="section level2">
+<h2>Summary of variables:</h2>
+<pre><code>##   age         job marital education default balance housing loan  contact day
+## 1  30  unemployed married   primary      no    1787      no   no cellular  19
+## 2  33    services married secondary      no    4789     yes  yes cellular  11
+## 3  35  management  single  tertiary      no    1350     yes   no cellular  16
+## 4  30  management married  tertiary      no    1476     yes  yes  unknown   3
+## 5  59 blue-collar married secondary      no       0     yes   no  unknown   5
+## 6  35  management  single  tertiary      no     747      no   no cellular  23
+##   month duration campaign pdays previous poutcome y
+## 1   oct       79        1    -1        0  unknown 0
+## 2   may      220        1   339        4  failure 0
+## 3   apr      185        1   330        1  failure 0
+## 4   jun      199        4    -1        0  unknown 0
+## 5   may      226        1    -1        0  unknown 0
+## 6   feb      141        2   176        3  failure 0</code></pre>
+</div>
+<div id="summary-of-findings" class="section level2">
+<h2>Summary of findings:</h2>
+<ul>
+<li><p>From the above model, that best fit the bank data, we can say that, though the model does not gives 100% accuracy, still the result is significantly high as we took the equal number or yes and no(balanced class) data as train data.</p></li>
+<li><p>To identify whether the customer will subscribe to the term deposit or not, we need to test with the above best fitted model for each new customer.</p></li>
+<li><p>The feature of some jobs, education, day, month, loan, previous outcome etc shown as significant variable to consider as gives higher p-values(&gt;0.5).</p></li>
+<li><p>The effect of duration is significantly low in this model.</p></li>
+</ul>
 </div>
 
     </div>
@@ -267,9 +336,6 @@ summary(bank)</code></pre>
 
 
     
-<script src="/js/math-code.js"></script>
-<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
 
     
   </body>

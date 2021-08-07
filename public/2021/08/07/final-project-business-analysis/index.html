@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">22 min read</span>
+    <span class="article-duration">20 min read</span>
     
 
     <h1 class="article-title">Final Project: Business Analysis</h1>
@@ -76,96 +76,18 @@
 <script src="/2021/08/07/final-project-business-analysis/index_files/header-attrs/header-attrs.js"></script>
 
 
-<div id="assessing-the-financial-benefit-of-the-project" class="section level2">
-<h2>Assessing the financial benefit of the project</h2>
-<p>This project would benefit credit card providers by detecting customers who have the potential of missing their credit card payments. Although this is not an unfamiliar situation for these institutions, it affects their revenue every year by making them prosecute these clients. This project gives you two options two avoid these customers based on two categories of information you already have!</p>
-<p>First, a short explanation about the method we used to assess the reliability of our model. This model has been tested by a population of more than 20’000 applicants. Please note that his population is new to our model. In other words, our model has not any bias about them.</p>
+<p><strong><em>Assessing the financial benefit of the project</em></strong></p>
+<p>This project would benefit credit card providers by detecting customers who have the potential
+of missing their credit card payments. Although this is not an unfamiliar situation for these institutions, it affects their revenue every year by making them prosecute these clients. This project gives you two options two avoid these customers based on two categories of information you already have!</p>
+<p>First, a short explanation about the method we used to assess the reliability of our model.
+This model has been tested by a population of more than 20’000 applicants. Please note that
+his population is new to our model. In other words, our model has not any bias about them.</p>
 <p>The first piece of information for making a decision is demographic information. This is what you are collecting from a potential client when they are applying for a new credit card. Our model shows that by this information alone, you could detect 25% of those who would miss a payment. However, you will lose 15% of your good customers. In other words, we predict 25% of bad customers, but our model predicts 15% of your good clients as bad clients. Considering the huge financial burden of a bad client on the institute, losing those clients is sensible.</p>
 <p>The second piece of information is credit bureau data. Using this information, our model would detect more bad clients, while it has a lower error rate. Providing numerical value, You will detect 50% of bad clients and will lose 25% of good customers.</p>
 <p>Please note provided percents could later be modified by a limited modification in the model. For example, when you need to attract new customers, model could accept more customers with expense of accepting more bad clients and vise versa.</p>
-</div>
-<div id="libraries" class="section level2">
-<h2>Libraries</h2>
-<pre class="r"><code>library(tidymodels)</code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;tune&#39;:
-##   method                   from   
-##   required_pkgs.model_spec parsnip</code></pre>
-<pre><code>## ── Attaching packages ────────────────────────────────────── tidymodels 0.1.3 ──</code></pre>
-<pre><code>## ✓ broom        0.7.7      ✓ recipes      0.1.16
-## ✓ dials        0.0.9      ✓ rsample      0.1.0 
-## ✓ dplyr        1.0.7      ✓ tibble       3.1.2 
-## ✓ ggplot2      3.3.5      ✓ tidyr        1.1.3 
-## ✓ infer        0.5.4      ✓ tune         0.1.5 
-## ✓ modeldata    0.1.0      ✓ workflows    0.2.2 
-## ✓ parsnip      0.1.6      ✓ workflowsets 0.0.2 
-## ✓ purrr        0.3.4      ✓ yardstick    0.0.8</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
-## x purrr::discard() masks scales::discard()
-## x dplyr::filter()  masks stats::filter()
-## x dplyr::lag()     masks stats::lag()
-## x recipes::step()  masks stats::step()
-## • Use tidymodels_prefer() to resolve common conflicts.</code></pre>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
-<pre><code>## ✓ readr   1.4.0     ✓ forcats 0.5.1
-## ✓ stringr 1.4.0</code></pre>
-<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## x readr::col_factor() masks scales::col_factor()
-## x purrr::discard()    masks scales::discard()
-## x dplyr::filter()     masks stats::filter()
-## x stringr::fixed()    masks recipes::fixed()
-## x dplyr::lag()        masks stats::lag()
-## x readr::spec()       masks yardstick::spec()</code></pre>
-<pre class="r"><code>library(Information)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;Information&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:dials&#39;:
-## 
-##     penalty</code></pre>
-<pre class="r"><code>library(ROSE)</code></pre>
-<pre><code>## Loaded ROSE 0.0-4</code></pre>
-<pre class="r"><code>library(e1071)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;e1071&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:tune&#39;:
-## 
-##     tune</code></pre>
-<pre><code>## The following object is masked from &#39;package:rsample&#39;:
-## 
-##     permutations</code></pre>
-<pre class="r"><code>library(kernlab)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;kernlab&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     cross</code></pre>
-<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
-## 
-##     alpha</code></pre>
-<pre><code>## The following object is masked from &#39;package:scales&#39;:
-## 
-##     alpha</code></pre>
-<pre class="r"><code>library(tidyverse)
-library(caret)</code></pre>
-<pre><code>## Loading required package: lattice</code></pre>
-<pre><code>## 
-## Attaching package: &#39;caret&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:yardstick&#39;:
-## 
-##     precision, recall, sensitivity, specificity</code></pre>
-<pre><code>## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     lift</code></pre>
-<pre class="r"><code>library(ROCit)
-library(brglm)</code></pre>
-<pre><code>## Loading required package: profileModel</code></pre>
-<pre><code>## &#39;brglm&#39; will gradually be superseded by the &#39;brglm2&#39; R package (https://cran.r-project.org/package=brglm2), which provides utilities for mean and median bias reduction for all GLMs.
-##  Methods for the detection of separation and infinite estimates in binomial-response models are provided by the &#39;detectseparation&#39; R package (https://cran.r-project.org/package=detectseparation).</code></pre>
-<pre class="r"><code>library(yardstick)
-library(ggplot2)</code></pre>
-</div>
-<div id="import-two-dataset-and-rename-variables" class="section level2">
-<h2>import two dataset and rename variables</h2>
+<p><strong><em>Libraries</em></strong></p>
+<p>Required packages for the data analysis are installed first of all for the analysis.</p>
+<p><strong><em>import two dataset and rename variables</em></strong></p>
 <p>For the convenience of data analysis, we have renamed the variables from the original dataset, after importing the there are as below:</p>
 <pre><code>##  [1] &quot;id&quot;                  &quot;dpd_90_6m&quot;           &quot;dpd_60_6m&quot;          
 ##  [4] &quot;dpd_30_6m&quot;           &quot;dpd_90_12m&quot;          &quot;dpd_60_12m&quot;         
@@ -177,13 +99,9 @@ library(ggplot2)</code></pre>
 <pre><code>##  [1] &quot;id&quot;               &quot;age&quot;              &quot;gender&quot;           &quot;marital&quot;         
 ##  [5] &quot;dependents&quot;       &quot;income&quot;           &quot;education&quot;        &quot;profession&quot;      
 ##  [9] &quot;residence&quot;        &quot;residence_months&quot; &quot;company_months&quot;   &quot;performance_tag&quot;</code></pre>
-</div>
-<div id="bind-two-dataset-reordering-columns-outcome-master-dataset" class="section level2">
-<h2>bind two dataset, reordering columns (outcome: master dataset)</h2>
+<p><strong><em>bind two dataset, reordering columns (outcome: master dataset)</em></strong></p>
 <p>Here two datasets of demographic and credit bureau data are combined. besides, We ordered the column names and saved the dataset named as master here.</p>
-</div>
-<div id="weight-of-evidence-woe-and-equivalently-information-value-analysis" class="section level2">
-<h2>weight of evidence (WOE) (and, equivalently, information value analysis)</h2>
+<p><strong><em>weight of evidence (WOE) (and, equivalently, information value analysis)</em></strong></p>
 <p>As we know, weight of evidence and information value helps to explore data and screen variables and hence it will be easier for us to use those values as a benchmark to screen variables in relation to the dependent variable.Before calculating those values we need to prepare our data first.</p>
 <p><strong><em>Data Preparation</em></strong></p>
 <p>Fist of all we have omitted the missing values from the dataset as there is a lots of ‘na’ values exists and then we have removed the variable with customer ID.</p>
@@ -193,7 +111,6 @@ library(ggplot2)</code></pre>
 <p>To visualize all the variables in terms of WOE and IV values here we plotted the variables below:</p>
 <p><img src="/2021/08/07/final-project-business-analysis/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="/2021/08/07/final-project-business-analysis/index_files/figure-html/unnamed-chunk-6-2.png" width="672" /><img src="/2021/08/07/final-project-business-analysis/index_files/figure-html/unnamed-chunk-6-3.png" width="672" /><img src="/2021/08/07/final-project-business-analysis/index_files/figure-html/unnamed-chunk-6-4.png" width="672" /><img src="/2021/08/07/final-project-business-analysis/index_files/figure-html/unnamed-chunk-6-5.png" width="672" /></p>
 <p><strong><em>Replace variables’ values by the corresponding WOE value</em></strong></p>
-</div>
 <div id="univariate-analysis-of-master-data" class="section level2">
 <h2>Univariate Analysis of Master data</h2>
 <p>According to the IV analysis results of the important variable we have selected the most important variables from the master data set for further analysis. As we know, the IV value 0.3 to 0.5, then the predictor has a strong relationship to the Goods or Bad odds ratio.For exploring the data set some basic univariate Analysis on Master data is done below first. This analysis will answer the questions below:
@@ -419,7 +336,7 @@ From the confusion matrix in case of logistic regression with demographic data w
 <p>We know,random forest is a way of averaging multiple deep decision trees, trained on different parts of the same training set, to decrease over-fitting problem of individual decision tree.For doing that we have prepared and spitted data set with 70:30 proportions following steps as below.</p>
 <pre><code>## parsnip model object
 ## 
-## Fit time:  9m 39.8s 
+## Fit time:  22m 35.9s 
 ## Ranger result
 ## 
 ## Call:

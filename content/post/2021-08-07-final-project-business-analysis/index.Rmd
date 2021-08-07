@@ -12,9 +12,12 @@ tags: []
 ---
 ***Assessing the financial benefit of the project***  
 
-This project would benefit credit card providers by detecting customers who have the potential of missing their credit card payments. Although this is not an unfamiliar situation for these institutions, it affects their revenue every year by making them prosecute these clients. This project gives you two options two avoid these customers based on two categories of information you already have!
+This project would benefit credit card providers by detecting customers who have the potential 
+of missing their credit card payments. Although this is not an unfamiliar situation for these institutions, it affects their revenue every year by making them prosecute these clients. This project gives you two options two avoid these customers based on two categories of information you already have!
 
-First, a short explanation about the method we used to assess the reliability of our model. This model has been tested by a population of more than 20'000 applicants. Please note that his population is new to our model. In other words, our model has not any bias about them. 
+First, a short explanation about the method we used to assess the reliability of our model.
+This model has been tested by a population of more than 20'000 applicants. Please note that 
+his population is new to our model. In other words, our model has not any bias about them. 
 
 The first piece of information for making a decision is demographic information. This is what you are collecting from a potential client when they are applying for a new credit card. Our model shows that by this information alone, you could detect 25% of those who would miss a payment. However, you will lose 15% of your good customers. In other words, we predict 25% of bad customers, but our model predicts 15% of your good clients as bad clients. Considering the huge financial burden of a bad client on the institute, losing those clients is sensible.
 
@@ -25,7 +28,7 @@ Please note provided percents could later be modified by a limited modification 
 
 ***Libraries*** 
 
-Required packages for the data analysis are installed first of all.
+Required packages for the data analysis are installed first of all for the analysis. 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 library(tidymodels)
 library(tidyverse)
